@@ -20,7 +20,7 @@ export const testingConfig = {
             'Netbank Plus',
             'Studiekonto',
             'Senior Opsparing',
-            'Børneopsparelse',
+            'Børneopsparing',
             'Flexlån konto',
             'Boligopsparing',
             'Pension Plus',

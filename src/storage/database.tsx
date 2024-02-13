@@ -8,7 +8,7 @@ let randomClasses = generateRandomClasses();
 
 export const fetchDatabase = () => {
     if (!generalConfig.devBuild) {
-        return console.log("Running production build");
+        return console.warn("Running production build");
     }
 }
 

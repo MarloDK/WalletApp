@@ -1,7 +1,10 @@
-import { StyleSheet, View } from "react-native"
-import { CustomTabNavigator } from "../components/CustomTabNavigator"
+import { SafeAreaView, StyleSheet, View } from "react-native"
 import { OverviewWithGraph } from "../components/OverviewWithGraphComponent"
 import { getAccounts, getSubscriptions } from "../storage/database"
+import { NewCustomTabNavigator } from "../components/CustomTabNavigatorComponent"
+import { AccountsOverviewTabScreen, SubscriptionsOverviewTabScreen, LoansOverviewTabScreen } from "./tabScreens/HomeOverviewTabScreens"
+import { StackNavigationProp } from "@react-navigation/stack"
+import { RootStackPropsList } from "../storage/StackParams"
 
 const testData = [
     {value: 0}, // 1
@@ -18,7 +21,11 @@ const testData = [
     {value: 4}, // 12
 ]
 
-export const HomeScreen = () => {
+type Props = {
+    navigation: StackNavigationProp<RootStackPropsList, 'Home'>;
+}
+
+export const HomeScreen = (props: Props) => {
     const getTotalBalance = () => {
         const allAccounts = getAccounts();
 
@@ -38,13 +45,12 @@ export const HomeScreen = () => {
             total += subscription.getMonthlyPrice();
         });
 
-        console.log("Total monthly fees: " + total)
         return total;
     }
 
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View style={styles.overviewSectionContainer}>
                 <OverviewWithGraph
                     title="Total balance"
@@ -61,19 +67,53 @@ export const HomeScreen = () => {
                     chartData={testData}
                 />
             </View>
-            <CustomTabNavigator />
-        </View>
+            <NewCustomTabNavigator
+                tabButtons={['Konti', 'Abonnementer', 'Lån']}
+                tabScreens={[
+                    <AccountsOverviewTabScreen
+                        navigation={props.navigation}
+                    />,
+                    <SubscriptionsOverviewTabScreen 
+                        navigation={props.navigation}
+                    />,
+                    <LoansOverviewTabScreen 
+                        navigation={props.navigation}
+                    />
+                ]}
+                tabButtonsContainerStyle={styles.tabButtonsContainer}
+                activeTabButtonTextStyle={styles.activeTabButtonText}
+                inactiveTabButtonTextStyle={styles.inactiveTabButtonText}
+            />
+        </SafeAreaView>  
     )
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        backgroundColor: '#181824',
         justifyContent: 'flex-start',
+        alignItems: 'center',
+        flexDirection: 'column',
     },
     overviewSectionContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         gap: 20,
-        marginBottom: 20,
+        marginBottom: 30,
+    },
+    tabButtonsContainer: {
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 30,
+        paddingVertical: 15,
+        marginBottom: 10,
+    },
+    activeTabButtonText: {
+        fontSize: 16,
+        fontFamily: 'Inter_500Medium'
+    },
+    inactiveTabButtonText: {
+        fontSize: 12
     }
 });

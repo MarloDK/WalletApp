@@ -1,12 +1,19 @@
-import { ScrollView, StyleSheet, View } from "react-native"
-import { TabItem } from "./TabItems"
-import { Tab } from "../storage/TabEnum"
-import { NewTabItemButton } from "./NewTabItemButton"
-import { getAccounts, getLoans, getSubscriptions } from "../storage/database"
-import { formatNumber } from "../utils/NumberFormatter"
-import { Transaction } from "../storage/classes/TransactionClass"
 
-export const AccountsTab = () => {
+import { ScrollView, StyleSheet, View } from "react-native"
+import { TabItem } from "../../components/TabItemComponent"
+import { Tab } from "../../storage/TabEnum"
+import { NewTabItemButton } from "../../components/NewTabItemButtonComponent"
+import { getAccounts, getLoans, getSubscriptions } from "../../storage/database"
+import { formatNumber } from "../../utils/NumberFormatter"
+import { Transaction } from "../../storage/classes/TransactionClass"
+import { StackNavigationProp } from "@react-navigation/stack"
+import { RootStackPropsList } from "../../storage/StackParams"
+
+type Props = {
+    navigation: StackNavigationProp<RootStackPropsList, 'Home'>;
+}
+
+export const AccountsOverviewTabScreen = (props: Props) => {
     let allTabItems: any = [];
     const allAccounts = getAccounts();
 
@@ -31,13 +38,14 @@ export const AccountsTab = () => {
         <ScrollView style={styles.container}>
             {allTabItems}
             <NewTabItemButton
-                tabType={Tab.ACCOUNTS}
+                tabTypeId={0}
+                navigation={props.navigation}
             />
         </ScrollView>
     )
 }
 
-export const SubscriptionsTab = () => {
+export const SubscriptionsOverviewTabScreen = (props: Props) => {
     let allTabItems: any = [];
     const allSubscriptions = getSubscriptions();
 
@@ -61,13 +69,14 @@ export const SubscriptionsTab = () => {
         <ScrollView style={styles.container}>
             {allTabItems}
             <NewTabItemButton
-                tabType={Tab.SUBSCRIPTIONS}
+                tabTypeId={1}
+                navigation={props.navigation}
             />
         </ScrollView>
     )
 }
 
-export const LoansTab = () => {
+export const LoansOverviewTabScreen = (props: Props) => {
     let allTabItems: any = [];
     const allLoans = getLoans();
 
@@ -89,7 +98,8 @@ export const LoansTab = () => {
         <ScrollView style={styles.container}>
             {allTabItems}
             <NewTabItemButton
-                tabType={Tab.SUBSCRIPTIONS}
+                tabTypeId={2}
+                navigation={props.navigation}
             />
         </ScrollView>
     )

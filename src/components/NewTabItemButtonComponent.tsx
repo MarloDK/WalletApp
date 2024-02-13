@@ -1,15 +1,18 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
-import { Tab } from "./CustomTabNavigator";
 import { Ionicons } from '@expo/vector-icons';
+import { RootStackPropsList } from "../storage/StackParams";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 type NewTabItemProps = {
-    tabType: Tab,
+    tabTypeId: number,
+    navigation: StackNavigationProp<RootStackPropsList>,
 }
 
 export const NewTabItemButton = (props: NewTabItemProps) => {
     return (
         <TouchableOpacity
             style={styles.container}
+            onPress={() => props.navigation.navigate('CreateEntity', {startTab: props.tabTypeId})}
         >
             <Ionicons 
                 name="add-circle-outline"

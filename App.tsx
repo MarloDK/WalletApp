@@ -5,13 +5,19 @@ import { useFonts, Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { fetchDatabase } from './src/storage/database';
-
+import { FinancialEntityCreationScreen } from './src/screens/FinancialEntityCreationScreen';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { RootStackPropsList } from './src/storage/StackParams';
+import { title } from 'process';
 
 // Keep the splash screen visible while the app is loading fonts etc.
 SplashScreen.preventAutoHideAsync();
 
 // Fetch DB
 fetchDatabase();
+
+const Stack = createStackNavigator<RootStackPropsList>();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -39,17 +45,54 @@ export default function App() {
     )
   }
 
+
+  // <HomeScreen />
+  // <FinancialEntityCreationScreen />
   return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#181824',
+          },
+          headerTintColor: '#181824',
+          headerTitleStyle: {
+            fontFamily: 'Inter_500Medium',
+            color: '#FFF',
+            fontSize: 25,
+          },
+          headerLeft: () => null,
+          headerBackTitleVisible: false,
+          headerShadowVisible: false,
+        }}
+      >
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+          name="CreateEntity" 
+          component={FinancialEntityCreationScreen}
+          options={
+            () => ({ title: 'Opret'})
+          }
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+/*
     <SafeAreaView style={{
       flex: 1,
       backgroundColor: '#181824',
-      paddingHorizontal: 20,
-      justifyContent: 'space-evenly',
+      justifyContent: 'flex-start',
       alignItems: 'center',
       flexDirection: 'column',
     }}>
+
       <StatusBar style="dark"/>
-      <HomeScreen />
+      <FinancialEntityCreationScreen />
     </SafeAreaView>
-  );
-}
+*/
