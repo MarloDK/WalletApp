@@ -31,9 +31,9 @@ export const FinancialEntityCreationScreen = ({navigation, route}: Props): JSX.E
             <NewCustomTabNavigator 
                 tabButtons={['Konto', 'Abonnement', 'Lån']}
                 tabScreens={[
-                    AccountCreationScreen(),
-                    SubscriptionCreationScreen(),
-                    LoanCreationScreen(),
+                    <AccountCreationScreen key="account"/>,
+                    <SubscriptionCreationScreen key="subscription"/>,
+                    <LoanCreationScreen key="loan"/>,
                 ]}
                 tabStart={startTab ? startTab : 0}
                 onTabChange={onTabChange}

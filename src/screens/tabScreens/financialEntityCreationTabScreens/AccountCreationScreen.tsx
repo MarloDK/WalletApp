@@ -43,8 +43,6 @@ export const AccountCreationScreen = () => {
                 suffix={'DKK'}
                 onValueChange={(text: string) => setBalance(Number(text))}
             />
-
-
         </View>
     )
 }

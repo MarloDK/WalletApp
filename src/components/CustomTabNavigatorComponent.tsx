@@ -40,45 +40,39 @@ export const NewCustomTabNavigator = (props: CustomTabNavigatorProps) => {
         }
     }
 
+    // Prevents infinite re-render
+    useEffect(() => {
+        if (props.tabStart && props.tabStart < props.tabScreens.length) {
+            navigateToTabScreen(props.tabStart);
+        }
+    }, [props.tabStart])
+
     const renderTabButtons = () => {
-        let tabButtons: any = [];
-
-        props.tabButtons.forEach((tabButton, index) => {
-            if (activeTabScreen === index) {
-                // Active button
-                tabButtons.push(
-                    <TouchableOpacity
-                        key={index}
-                        style={[styles.activeButtonDefault, props.activeTabButtonStyle]}
-                        onPress={() => navigateToTabScreen(index)}
+        return props.tabButtons.map((tabButton, index) => {
+            return (
+                <TouchableOpacity
+                    key={index}
+                    style={[
+                        index == activeTabScreen ? styles.activeButtonDefault : styles.inactiveButtonDefault,
+                        index == activeTabScreen ? props.activeTabButtonStyle : props.inactiveTabButtonStyle,
+                    ]}
+                    onPress={() => navigateToTabScreen(index)}
+                >
+                    <AppText
+                        style={[
+                            index == activeTabScreen ? styles.activeButtonTextDefault : styles.inactiveButtonTextDefault,
+                            index == activeTabScreen ? props.activeTabButtonTextStyle : props.inactiveTabButtonTextStyle,
+                        ]}
                     >
-                        <AppText style={[styles.activeButtonTextDefault, props.activeTabButtonTextStyle]}>{tabButton}</AppText>
-                    </TouchableOpacity>
-                )
-
-            } else {
-                // Inactive button
-                tabButtons.push(
-                    <TouchableOpacity
-                        key={index}
-                        style={[styles.inactiveButtonDefault, props.inactiveTabButtonStyle]}
-                        onPress={() => navigateToTabScreen(index)}
-                    >
-                        <AppText style={[styles.inactiveButtonTextDefault, props.inactiveTabButtonTextStyle]}>{tabButton}</AppText>
-                    </TouchableOpacity>
-                )
-            }
+                        {tabButton}
+                    </AppText>
+                </TouchableOpacity>
+            )
         });
-
-        return tabButtons;
     }
 
     const renderTabScreen = () => {
         return props.tabScreens[activeTabScreen];
-    }
-
-    if (props.tabStart && props.tabStart <= props.tabScreens.length) {
-        navigateToTabScreen(props.tabStart);
     }
 
     return (
