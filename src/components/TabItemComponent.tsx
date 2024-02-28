@@ -2,6 +2,11 @@ import { Image, StyleSheet, TouchableOpacity, View } from "react-native"
 import { AppText, AppTextSecondary } from "./CustomTextComponents"
 import { Tab } from "../storage/TabEnum";
 import { formatNumber } from "../utils/NumberFormatter";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackPropsList } from "../storage/StackParams";
+import { Account } from "../storage/classes/AccountClass";
+import { Subscription } from "../storage/classes/SubscriptionClass";
+import { Loan } from "../storage/classes/LoanClass";
 
 type TabItemProps = {
     tabType: Tab,
@@ -11,6 +16,8 @@ type TabItemProps = {
     description: string,
     secondaryDescription?: string,
     key: number,
+    navigation: StackNavigationProp<RootStackPropsList>;
+    object: Account | Subscription | Loan;
 }
 
 export const TabItem = (props: TabItemProps) => {
@@ -67,9 +74,24 @@ export const TabItem = (props: TabItemProps) => {
         }
     }
 
+    const navigateToEntityScreen = () => {
+        switch (props.tabType) {
+            case Tab.ACCOUNTS:
+                props.navigation.navigate('Account', {account: props.object as Account});
+                break;
+            case Tab.SUBSCRIPTIONS:
+                props.navigation.navigate('Account', {account: props.object as Account});
+                break;
+            case Tab.LOANS:
+                props.navigation.navigate('Account', {account: props.object as Account});
+                break;
+        }
+    }
+
     return (
         <TouchableOpacity
             style={styles.container}
+            onPress={navigateToEntityScreen}
         >
             <View style={styles.circle}>
                 {getTabItemIcon()}

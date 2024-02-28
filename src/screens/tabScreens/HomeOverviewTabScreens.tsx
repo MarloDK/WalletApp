@@ -20,7 +20,7 @@ export const AccountsOverviewTabScreen = (props: Props) => {
     allAccounts.forEach((account, i) => {
         let latestTransaction = account.getLatestTransaction();
         if (!latestTransaction)
-            latestTransaction = new Transaction("Placeholder", new Date(), 0, 100);
+            latestTransaction = new Transaction("Placeholder", new Date().toISOString(), 0, 100);
         allTabItems.push(
             <TabItem
                 key={i}
@@ -30,6 +30,8 @@ export const AccountsOverviewTabScreen = (props: Props) => {
                 value={account.getBalance()}
                 description={account.getFullId()}
                 secondaryDescription={latestTransaction.transactionValue.toString()}
+                navigation={props.navigation}
+                object={account}
             />
         )
     })
@@ -61,6 +63,8 @@ export const SubscriptionsOverviewTabScreen = (props: Props) => {
                 value={subscription.getPrice()}
                 description={`Næste betaling: ${billingDate.getDay()}/${billingDate.getMonth()}`}
                 secondaryDescription={`/ ${subscription.getSubscriptionPeriodName()}`}
+                navigation={props.navigation}
+                object={subscription}
             />
         )
     })
@@ -90,6 +94,8 @@ export const LoansOverviewTabScreen = (props: Props) => {
                 value={loan.amount}
                 description={loan.creditor}
                 secondaryDescription={"Rest: " + formatNumber(loan.getRemainingDebt())}
+                navigation={props.navigation}
+                object={loan}
             />
         )
     })

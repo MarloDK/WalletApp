@@ -128,6 +128,7 @@ export class Account {
      * @returns The latest transaction that has occured.
      */
     getLatestTransaction(): Transaction {
-        return this._transactionHistory[0];
+        console.log(this.getName() + ": " + this._transactionHistory[this._transactionHistory.length - 1])
+        return this._transactionHistory[this._transactionHistory.length - 1];
     }
 }

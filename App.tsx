@@ -10,6 +10,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { RootStackPropsList } from './src/storage/StackParams';
 import { title } from 'process';
+import { AccountScreen } from './src/screens/AccountScreen';
 
 // Keep the splash screen visible while the app is loading fonts etc.
 SplashScreen.preventAutoHideAsync();
@@ -69,6 +70,11 @@ export default function App() {
         <Stack.Screen 
           name="Home" 
           component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+          name='Account'
+          component={AccountScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen 

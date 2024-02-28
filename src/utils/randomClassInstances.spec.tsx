@@ -6,6 +6,7 @@ import { Subscription } from "../storage/classes/SubscriptionClass";
 import { AccountIcons, BrandLogos, LoanIcons } from "./LogosAndIcons";
 import { PaymentPeriod } from "../storage/PaymentPeriodEnum";
 import { generalConfig } from "../configs/general.config";
+import { Transaction } from "../storage/classes/TransactionClass";
 
 export const generateRandomClasses = (): { accounts: Array<Account>, subscriptions: Array<Subscription>, loans: Array<Loan>, } => {
     if (!generalConfig.devBuild) {
@@ -27,8 +28,8 @@ export const generateRandomClasses = (): { accounts: Array<Account>, subscriptio
     // (Refractor from using for loops and array.push)
     // Generate x amount of random class
     // Usage: Array.from(object with length property, function)
-    let accounts = Array.from({ length: accountsToGenerate }, generateRandomAccount);
     let subscriptions = Array.from({ length: subscriptionsToGenerate }, generateRandomSubscription);
+    let accounts = Array.from({ length: accountsToGenerate }, (): Account => generateRandomAccount(subscriptions));
     let loans = Array.from({ length: loansToGenerate }, genereateRandomLoan);
 
     return {
@@ -38,8 +39,8 @@ export const generateRandomClasses = (): { accounts: Array<Account>, subscriptio
     }
 }
 
-function generateRandomAccount(): Account {
-    let name = testingConfig.accountSettings.names[getRandomInt(0, testingConfig.accountSettings.names.length)]
+function generateRandomAccount(subscriptions?: Array<Subscription>): Account {
+    let name = testingConfig.accountSettings.names[getRandomInt(0, testingConfig.accountSettings.names.length - 1)]
     let accountType = getRandomEnumValue(AccountType);
     if (accountType === undefined)
         accountType = AccountType.DEBIT;
@@ -50,10 +51,11 @@ function generateRandomAccount(): Account {
         testingConfig.accountSettings.startingBalance.min, 
         testingConfig.accountSettings.startingBalance.max
     );
-    
+
     let icon: JSX.Element | undefined = getRandomIcon(AccountIcons);
     if (icon === undefined)
         icon = AccountIcons.Account();
+    
 
     let newAccount = new Account(
         name,
@@ -63,6 +65,11 @@ function generateRandomAccount(): Account {
         startBalance,
         icon,
     )
+
+    if (subscriptions && testingConfig.accountSettings.generateTransactionhistory) {
+        generateTransactionHistory(newAccount, 12, subscriptions);
+    }
+
     return newAccount;
 }
 
@@ -128,6 +135,53 @@ function genereateRandomLoan(): Loan {
         icon
     )
     return newLoan;
+}
+
+const generateTransactionHistory = (account: Account, historyLength: number, userSubscriptions: Array<Subscription>) => {
+    let accountBalance = account.getBalance();
+
+    for (let i = 0; i < historyLength; i++) {
+        let positiveTransaction: boolean = Math.random() >= .3;
+
+        if (positiveTransaction) {
+            let transactionValue = getRandomInt(
+                testingConfig.transcationGenerationSettings.randomTransactionValueVariance.min,
+                testingConfig.transcationGenerationSettings.randomTransactionValueVariance.max
+            )
+
+            let transactionName = testingConfig.transcationGenerationSettings.names[getRandomInt(0, testingConfig.transcationGenerationSettings.names.length - 1)];
+
+            account.addTransaction(new Transaction(
+                transactionName,
+                new Date().toISOString(),
+                accountBalance,
+                accountBalance + transactionValue,
+                transactionValue
+            ));
+
+            accountBalance += transactionValue;
+        }
+
+        userSubscriptions.map((subscription, index) => {
+            let subscriptionBillingDate  = subscription.getBillingDate();
+            subscriptionBillingDate = new Date(
+                subscriptionBillingDate.getFullYear(),
+                subscriptionBillingDate.getMonth() + i,
+                subscriptionBillingDate.getDay(),
+            )
+
+            account.addTransaction(new Transaction(
+                subscription.getName() + " Inc.",
+                subscriptionBillingDate.toISOString(),
+                accountBalance,
+                accountBalance - subscription.getPrice(),
+                subscription.getPrice(),
+            ));
+
+            accountBalance -= subscription.getPrice();
+        });
+
+    }
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random#getting_a_random_integer_between_two_values

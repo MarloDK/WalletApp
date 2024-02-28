@@ -3,7 +3,6 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import { StyleSheet } from 'react-native';
 
 export const BrandLogos = {
     "AppleTV": require('../assets/images/brandLogos/Apple TV.png'),

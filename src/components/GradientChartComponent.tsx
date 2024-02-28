@@ -6,6 +6,8 @@ type GradientLineChartProps = {
     height: number,
     width: number,
     chartData: Array<lineDataItem>,
+    chartData2?: Array<lineDataItem>,
+    options?: {},
 }
 
 export const GradientLineChart = (props: GradientLineChartProps) => {
@@ -24,18 +26,26 @@ export const GradientLineChart = (props: GradientLineChartProps) => {
             )
         }}
         initialSpacing={12}
+        endSpacing={0}
+        noOfSections={12}
         data={props.chartData}
+        data2={props.chartData2 ? props.chartData2 : []}
         adjustToWidth={true}
         hideDataPoints
         curved
         curvature={.15}
         isAnimated
+        animationDuration={500}
         thickness={3}
         hideRules
         hideYAxisText
         hideAxesAndRules
         disableScroll
         xAxisLength={props.width}
+        xAxisIndicesHeight={5}
+        xAxisIndicesWidth={1}
+        xAxisIndicesColor='white'
+        xAxisLabelTextStyle={{color: 'white'}}
     />
     )
 }

@@ -4,12 +4,14 @@ export class Transaction {
      * @param private _name The name associated with the transaction.
      * @param readonly date The date the transaction occurred.
      * @param readonly previousBalance The account balance before the transaction was made.
+     * @param readonly newBalance The account balance after the transaction was made.
      * @param readonly transactionValue The value of the transaction.
      */
     constructor(
         private _name: string,
-        readonly date: Date,
+        readonly date: string,
         readonly previousBalance: number,
+        readonly newBalance: number,
         readonly transactionValue: number
     ) { }
 

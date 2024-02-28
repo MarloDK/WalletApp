@@ -10,7 +10,7 @@ export const testingConfig = {
         max: 10,
     },
     accountSettings: {
-        generateTransactionhistory: false,
+        generateTransactionhistory: true,
         startingBalance: {
             min: 0,
             max: 9999999,
@@ -27,6 +27,20 @@ export const testingConfig = {
             'Valutakonto',
             'Investorkonto',
         ],
+    },
+    transcationGenerationSettings: {
+        randomTransactionValueVariance: {
+            min: -20000,
+            max: 80000,
+        },
+        names: [
+            "Løn",
+            "MobilePay Overførsel - Hans Hansen",
+            "MobilePay Overførsel - John Doe",
+            "MobilePay Overførsel - Casper Bakhøj",
+            "MobilePay Overførsel - Jens Jensen",
+
+        ]
     },
     subscriptionSettings: {
         // Threshold to reach before going to yearly subscription period
