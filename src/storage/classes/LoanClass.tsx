@@ -3,7 +3,7 @@ import { LoanIcons } from "../../utils/LogosAndIcons";
 export class Loan {
     private _icon: JSX.Element = LoanIcons.MoneyBill(20, "#FFF");
     /**
-     * Creates a new instance of the Loan class.
+     * Creates a new Loan instance.
      * @param private _name The name of the loan.
      * @param private _icon The icon for the loan.
      * @param readonly creditor The name of the creditor.

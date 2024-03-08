@@ -2,6 +2,7 @@ export const testingConfig = {
     autofillStorage: true,
     skipClasses: {
         accounts: false,
+        savingsGoals: false,
         subscriptions: false,
         loans: false,
     },
@@ -41,6 +42,27 @@ export const testingConfig = {
             "MobilePay Overførsel - Jens Jensen",
 
         ]
+    },
+    savingsGoalSettings: {
+        goalTarget: {
+            min: 100,
+            max: 999999,
+        },
+        currentlySaved: {
+            min: 0,
+            max: -1,
+        },
+        names: [
+            'Ny bil',
+            'Ny telefon',
+            'Ny PC',
+            'Ny MacBook',
+            'Firma oprettelse',
+            'Nyt køkken',
+            'Nye højtalere',
+            'Ny seng',
+            'Ny cykel',
+        ],
     },
     subscriptionSettings: {
         // Threshold to reach before going to yearly subscription period

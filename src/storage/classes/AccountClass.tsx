@@ -7,7 +7,7 @@ export class Account {
     private _icon: JSX.Element = AccountIcons.Account(20, "#FFF");
 
     /**
-     * Creates a new instance of the Loan class.
+     * Creates a new Account instance.
      * @param private _name The name of the account.
      * @param readonly bankId The bank reference id (First 4 digits).
      * @param readonly accountId The id of the account.

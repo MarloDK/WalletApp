@@ -3,6 +3,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { stylingConfig } from '../configs/styling.config';
 
 export const BrandLogos = {
     "AppleTV": require('../assets/images/brandLogos/Apple TV.png'),
@@ -19,7 +20,7 @@ export const BrandLogos = {
     "Twitch": require('../assets/images/brandLogos/Twitch.png'),
 }
 
-const defaultSize: number = 20, defaultColor: string = "#FFF";
+const defaultSize: number = 20, defaultColor: string = stylingConfig.colors.secondaryVar;
 
 export const AccountIcons = {
     Savings: (size: number = defaultSize, color: string = defaultColor) => <MaterialIcons name={"savings"} size={size} color={color}/>,

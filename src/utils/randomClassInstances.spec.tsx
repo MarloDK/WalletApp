@@ -7,12 +7,14 @@ import { AccountIcons, BrandLogos, LoanIcons } from "./LogosAndIcons";
 import { PaymentPeriod } from "../storage/PaymentPeriodEnum";
 import { generalConfig } from "../configs/general.config";
 import { Transaction } from "../storage/classes/TransactionClass";
+import { SavingsGoal } from "../storage/classes/SavingsGoalClass";
 
-export const generateRandomClasses = (): { accounts: Array<Account>, subscriptions: Array<Subscription>, loans: Array<Loan>, } => {
+export const generateRandomClasses = (): { accounts: Array<Account>, savingsGoals: Array<SavingsGoal>, subscriptions: Array<Subscription>, loans: Array<Loan>, } => {
     if (!generalConfig.devBuild) {
         console.warn('Tried to generate random classes during production build');
         return {
             accounts: Array<Account>(),
+            savingsGoals: Array<SavingsGoal>(),
             subscriptions: Array<Subscription>(),
             loans: Array<Loan>(),
         };
@@ -22,6 +24,7 @@ export const generateRandomClasses = (): { accounts: Array<Account>, subscriptio
     const instanceVariationMin = testingConfig.classInstanceVariation.min;
 
     const accountsToGenerate = getRandomInt(instanceVariationMin, instanceVariationMax);
+    const savingsGoalsToGenerate = getRandomInt(instanceVariationMin, instanceVariationMax);
     const subscriptionsToGenerate = getRandomInt(instanceVariationMin, instanceVariationMax);
     const loansToGenerate = getRandomInt(instanceVariationMin, instanceVariationMax);
 
@@ -29,18 +32,20 @@ export const generateRandomClasses = (): { accounts: Array<Account>, subscriptio
     // Generate x amount of random class
     // Usage: Array.from(object with length property, function)
     let subscriptions = Array.from({ length: subscriptionsToGenerate }, generateRandomSubscription);
+    let savingsGoals = Array.from({ length: savingsGoalsToGenerate }, generateRandomSavingsGoal);
     let accounts = Array.from({ length: accountsToGenerate }, (): Account => generateRandomAccount(subscriptions));
     let loans = Array.from({ length: loansToGenerate }, genereateRandomLoan);
 
     return {
         accounts: !testingConfig.skipClasses.accounts ? accounts : [],
+        savingsGoals: !testingConfig.skipClasses.savingsGoals ? savingsGoals : [],
         subscriptions: !testingConfig.skipClasses.subscriptions ? subscriptions : [],
         loans: !testingConfig.skipClasses.loans ? loans : [],
     }
 }
 
 function generateRandomAccount(subscriptions?: Array<Subscription>): Account {
-    let name = testingConfig.accountSettings.names[getRandomInt(0, testingConfig.accountSettings.names.length - 1)]
+    let name = testingConfig.accountSettings.names[getRandomInt(0, testingConfig.accountSettings.names.length - 1)];
     let accountType = getRandomEnumValue(AccountType);
     if (accountType === undefined)
         accountType = AccountType.DEBIT;
@@ -71,6 +76,30 @@ function generateRandomAccount(subscriptions?: Array<Subscription>): Account {
     }
 
     return newAccount;
+}
+
+function generateRandomSavingsGoal(): SavingsGoal {
+    let name = testingConfig.savingsGoalSettings.names[getRandomInt(0, testingConfig.savingsGoalSettings.names.length - 1)];
+    let targetAmount = getRandomInt(
+        testingConfig.savingsGoalSettings.goalTarget.min, 
+        testingConfig.savingsGoalSettings.goalTarget.max
+    );
+    
+    let maxSavedAmount = testingConfig.savingsGoalSettings.currentlySaved.max;
+
+    let savedAmount = getRandomInt(
+        testingConfig.savingsGoalSettings.currentlySaved.min, 
+        maxSavedAmount == -1 ? getRandomInt(0, targetAmount) : maxSavedAmount
+    );
+
+
+    let newSavingsGoal = new SavingsGoal(
+        name,
+        targetAmount,
+        savedAmount
+    )
+
+    return newSavingsGoal;
 }
 
 function generateRandomSubscription(): Subscription {

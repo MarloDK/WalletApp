@@ -2,7 +2,7 @@ import { PaymentPeriod } from "../PaymentPeriodEnum";
 
 export class Subscription {
     /**
-     * Creates a new instance of the Subscription class.
+     * Creates a new Subscription instance.
      * @param private _serviceName The name of the subscription service.
      * @param private _serviceLogo The logo of the subscription service.
      * @param private _price The price of the subscription when payment is due.
