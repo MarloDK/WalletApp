@@ -11,19 +11,26 @@ import { AccountScreen } from './src/screens/AccountScreen';
 import { DashboardScreen } from './src/screens/DashboardScreen';
 import { Header } from './src/components/CustomTextComponents';
 import { stylingConfig } from './src/configs/styling.config';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { FontAwesome6, Fontisto, Octicons } from '@expo/vector-icons';
+import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
+import { AntDesign, Entypo, Feather, FontAwesome6, Fontisto, MaterialIcons, Octicons } from '@expo/vector-icons';
 import { SavingsScreen } from './src/screens/savings/SavingsScreen';
-import { BudgetScreen } from './src/screens/BudgetScreen';
+import { BudgetScreen } from './src/screens/budget/BudgetScreen';
 import { ViewSavingsGoalScreen } from './src/screens/savings/ViewSavingsGoalScreen';
+import { EditSavingsGoalScreen } from './src/screens/savings/EditSavingsGoalScreen';
+import { CreateSavingsGoalScreen } from './src/screens/savings/CreateSavingsGoalScreen';
+import { AccountsScreen } from './src/screens/accounts/AccountsScreen';
+import { ViewAccountScreen } from './src/screens/accounts/ViewAccountScreen';
+import { EditAccountScreen } from './src/screens/accounts/EditAccountScreen';
+import { CreateAccountScreen } from './src/screens/accounts/CreateAccountScreen';
+import { PaymentsScreen } from './src/screens/payments/PaymentsScreen';
+import { Stack, getHiddenScreenOptions } from './src/navigation/Stack';
+import { AccountsNavigation } from './src/navigation/AccountsNavigation';
 
 // Keep the splash screen visible while the app is loading fonts etc.
 SplashScreen.preventAutoHideAsync();
 
 // Fetch DB
 fetchDatabase();
-
-const Stack = createBottomTabNavigator<RootStackPropsList>();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -65,11 +72,14 @@ export default function App() {
             size = 25;
 
             if (route.name === "Dashboard") {
-              icon = <Octicons name='graph' size={size} color={color} />; // Octicons
-            } else if (route.name === "Savings") {
-              icon = <FontAwesome6 name='sack-dollar' size={size} color={color} />; // FontAwesome6
+              icon = <MaterialIcons name="dashboard" size={size} color={color} /> ; // Octicons <Octicons name='graph' size={size} color={color} />
+            } else if (route.name === "Accounts") {
+              icon = <Entypo name='wallet' size={size} color={color} />; // FontAwesome6 or pie-chart-2 from Fontisto
+            } else if (route.name == "Payments") {
+              icon = <MaterialIcons name='payments' size={size} color={color} />
             } else if (route.name === "Budget") {
-              icon = <Fontisto name='pie-chart-2' size={size} color={color} />; // FontAwesome6 or pie-chart-2 from Fontisto
+              icon = <Feather name='trending-up' size={size} color={color} />; // FontAwesome6 or pie-chart-2 from Fontisto
+              // icon = <Fontisto name='pie-chart-2' size={size} color={color} />; // FontAwesome6 or pie-chart-2 from Fontisto
             }
 
             return icon;
@@ -114,7 +124,7 @@ export default function App() {
           headerTitleContainerStyle: {
             paddingBottom: 10,
           },
-          headerLeft: () => null,
+          headerBackVisible: true,
           headerShadowVisible: false,
         })}
       >
@@ -122,42 +132,58 @@ export default function App() {
           name="Dashboard" 
           component={DashboardScreen}
         />
+        <Stack.Screen
+          name="Accounts"
+          component={AccountsScreen}
+        />
         <Stack.Screen 
-          name="Savings" 
-          component={SavingsScreen}
+          name="Payments"
+          component={PaymentsScreen}
         />
         <Stack.Screen 
           name="Budget" 
           component={BudgetScreen}
         />
 
+        <Stack.Screen 
+          name='ViewAccount'
+          component={ViewAccountScreen}
+          options={getHiddenScreenOptions("Account")}
+        />
+        <Stack.Screen 
+          name='EditAccount'
+          component={EditAccountScreen}
+          options={getHiddenScreenOptions("Edit Account")}
+        />
+        <Stack.Screen 
+          name='CreateAccount'
+          component={CreateAccountScreen}
+          options={getHiddenScreenOptions("New Account")}
+        />
 
 
         <Stack.Screen 
-          name='Savings Goal'
+          name='Savings'
+          component={SavingsScreen}
+          options={getHiddenScreenOptions("Savings")}
+        />
+        <Stack.Screen 
+          name='ViewSavingsGoal'
           component={ViewSavingsGoalScreen}
-          options={{ 
-            headerShown: true,
-            tabBarItemStyle: {
-              display: 'none'
-            }
-          }}
+          options={getHiddenScreenOptions("Savings Goal")}
+        />
+        <Stack.Screen 
+          name='EditSavingsGoal'
+          component={EditSavingsGoalScreen}
+          options={getHiddenScreenOptions("Edit Savings Goal")}
+        />
+        <Stack.Screen 
+          name='CreateSavingsGoal'
+          component={CreateSavingsGoalScreen}
+          options={getHiddenScreenOptions("New Savings Goal")}
         />
       </Stack.Navigator>
+      <StatusBar style="light"/>
     </NavigationContainer>
   );
 }
-
-/*
-    <SafeAreaView style={{
-      flex: 1,
-      backgroundColor: '#181824',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      flexDirection: 'column',
-    }}>
-
-      <StatusBar style="dark"/>
-      <FinancialEntityCreationScreen />
-    </SafeAreaView>
-*/
