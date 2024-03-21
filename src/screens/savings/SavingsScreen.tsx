@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from "react-native"
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, FlatList } from "react-native"
 import { Header4, Paragraph, Subheader } from "../../components/CustomTextComponents"
 import { LargeSlimCard } from "../../components/new/ScrollCardComponents"
 import { stylingConfig } from "../../configs/styling.config"
@@ -6,18 +6,37 @@ import { getAccounts, getSavingsGoals } from "../../storage/database"
 import { LineChart } from "react-native-gifted-charts"
 import { NewSavingsGoalButton, SavingsGoalCard } from "../../components/new/SavingsGoalCardComponent"
 import { SavingsGoal } from "../../storage/classes/SavingsGoalClass"
+import { RootStackPropsList } from "../../storage/StackParams"
+import { StackNavigationProp } from "@react-navigation/stack"
+import { useCallback, useState } from "react"
+import { useFocusEffect } from "@react-navigation/native"
 
-export const SavingsScreen = () => {
-    const savingsGoals = getSavingsGoals();
+type SavingsScreenProps = {
+    navigation: StackNavigationProp<RootStackPropsList, 'Savings'>;
+}
 
-    const createSavingsGoalsCards = (): Array<JSX.Element> => {
-        let objects: Array<JSX.Element> = [];
-        savingsGoals.forEach(savingsGoal => {
-            objects.push(<SavingsGoalCard savingGoal={savingsGoal} />)
-        })
+export const SavingsScreen = (props: SavingsScreenProps) => {
+    const [savingsGoals, setSavingsGoals] = useState(Array<SavingsGoal>);
+    const [rerenderKey, setRerenderKey] = useState(0);
+    const footerItem = { isFooter: true };
 
-        return objects;
+    const fetchItems = () => {
+        console.log("Fetching Savings Goals");
+
+        const newSavingsGoals = getSavingsGoals();
+        setSavingsGoals(newSavingsGoals);
+
+        setRerenderKey(oldKey => oldKey + 1);   // Force a rerender since React Native doesn't
+                                                // Detect setSavingsGoals() updating.
     }
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchItems();
+
+            return () => {}
+        }, [])
+    )
 
     const testData = [
         5000,
@@ -34,11 +53,13 @@ export const SavingsScreen = () => {
         8536
     ];
 
-    const testGoal = new SavingsGoal(
-        "Test goal",
-        15000,
-        10000
-    )
+    const renderItem = (item: any) => {
+        if (item.isFooter) {
+            return <View style={{ marginHorizontal: 10}}><NewSavingsGoalButton navigation={props.navigation} callback={fetchItems} /></View>
+        }
+
+        return <View style={{ marginHorizontal: 10}}><SavingsGoalCard navigation={props.navigation} savingGoal={item} /></View>
+    }
 
     return (
         <View style={styles.appWrapper}>
@@ -127,14 +148,17 @@ export const SavingsScreen = () => {
                 </LineChart>
             </View>
             <View style={styles.container}>
-                <ScrollView 
-                    contentInset={{top: 30}}
-                    contentOffset={{x: 0, y: -30}}
+                <FlatList 
+                    key={rerenderKey}
+                    data={[...savingsGoals, footerItem]}
+                    contentInset={{ top: 30, bottom: 30 }}
+                    contentOffset={{ x: 0, y: -30}}
                     contentContainerStyle={styles.savingsContainer}
-                >
-                    {createSavingsGoalsCards()}
-                    <NewSavingsGoalButton />
-                </ScrollView>
+                    numColumns={2}
+                    columnWrapperStyle={{ justifyContent: 'space-between' }}
+                    renderItem={({item}) => renderItem(item)}
+                    keyExtractor={(item, index) => `savingGoal-${index}`}
+                />
             </View>
         </View>
     )
@@ -179,12 +203,9 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     savingsContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
         overflow: 'scroll',
         alignItems: 'center',
         width: '100%',
-        justifyContent: 'space-between',
-        rowGap: 45,
+        rowGap: 20,
     }
 });

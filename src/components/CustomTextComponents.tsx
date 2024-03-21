@@ -1,6 +1,10 @@
 import { Component } from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { stylingConfig } from "../configs/styling.config";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackPropsList } from "../storage/StackParams";
+import { To } from "@react-navigation/native/lib/typescript/src/useLinkTo";
+import { Link } from "@react-navigation/native";
 
 type TextProps = {
     fontWeight?: string,
@@ -101,5 +105,29 @@ export const Paragraph = (props: TextProps) => {
         ]}>
             {props?.children}
         </Text>
+    )
+}
+
+type LinkProps = {
+    to: To
+    style?: {}
+    children?: any
+}
+
+export const CustomLink = (props: LinkProps) => {
+    return (
+        <Link
+            to={props.to}
+            style={[
+                {
+                    color: stylingConfig.colors.text.link,
+                    fontFamily: stylingConfig.fontWeight.light,
+                    fontSize: stylingConfig.fontSizes.p,
+                }, 
+                props?.style   
+            ]}
+        >
+            {props?.children}
+        </Link>
     )
 }

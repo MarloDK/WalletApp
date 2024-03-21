@@ -1,10 +1,12 @@
 import { AccountIcons } from "../../utils/LogosAndIcons";
 import { AccountType } from "../AccountTypeEnum";
+import { Subscription } from "./SubscriptionClass";
 import { Transaction } from "./TransactionClass";
 
 export class Account {
     private _transactionHistory: Array<Transaction> = new Array<Transaction>();
     private _icon: JSX.Element = AccountIcons.Account(20, "#FFF");
+    private _attachedSubscriptions: Array<Subscription> = Array<Subscription>();
 
     /**
      * Creates a new Account instance.
@@ -13,6 +15,7 @@ export class Account {
      * @param readonly accountId The id of the account.
      * @param private _balance The balance on the account.
      * @param transactionHistory Optional array of transactions for intializing the transaction history of the account.
+     * @param attachedSubscriptions Optional array of subscriptions attached to the account.
      */
     constructor(
         private _name: string, 
@@ -22,11 +25,17 @@ export class Account {
         private _balance: number, 
         icon?: JSX.Element,
         transactionHistory?: Array<Transaction>,
-    )   {
-        if (icon)
+        attachedSubscriptions?: Array<Subscription>,
+    ) {
+        if (icon) {
             this._icon = icon;
-        if (transactionHistory)
+        }  
+        if (transactionHistory) {
             this._transactionHistory = transactionHistory;
+        }
+        if (attachedSubscriptions) {
+            this._attachedSubscriptions = attachedSubscriptions;
+        }
     }
 
     /**
@@ -128,7 +137,45 @@ export class Account {
      * @returns The latest transaction that has occured.
      */
     getLatestTransaction(): Transaction {
-        console.log(this.getName() + ": " + this._transactionHistory[this._transactionHistory.length - 1])
         return this._transactionHistory[this._transactionHistory.length - 1];
     }
+
+
+    /**
+     * Gets the attached subscriptions to the account.
+     * @returns An array of subscription objects.
+     */
+    getAttachedSubscriptions(): Array<Subscription> {
+        return this._attachedSubscriptions;
+    }
+
+    /**
+     * Attaches a subscription to the account
+     * @param subscription The subsription to attach to the account.
+     */
+    attachSubscription(subscription: Subscription) {
+        this._attachedSubscriptions.push(subscription);
+    }
+
+    /**
+     * Detaches a subscription from the account
+     * @param subscription The subsription to detach to the account.
+     */
+    detachSubscription(subscriptionIndex: number): void
+    detachSubscription(subscription: Subscription | number): void {
+        let index: number = -1;
+
+        if (typeof subscription === "number") {
+            index = subscription;
+        } else if (typeof subscription === typeof Subscription) {
+            if (!this._attachedSubscriptions.includes(subscription)) {
+                return console.log(`Couldn't find subscription ${subscription.getName()} in attached subscriptions for account ${this._name}`)
+            }
+            index = this._attachedSubscriptions.indexOf(subscription);
+        }
+
+        this._attachedSubscriptions.splice(index, 1);
+    }
+
+    
 }

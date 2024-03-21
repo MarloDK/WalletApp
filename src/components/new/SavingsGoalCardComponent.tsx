@@ -3,9 +3,14 @@ import { stylingConfig } from "../../configs/styling.config"
 import { Header, Header2, Header3, Header4, Paragraph } from "../CustomTextComponents"
 import { PieChart } from "react-native-gifted-charts"
 import { SavingsGoal } from "../../storage/classes/SavingsGoalClass"
+import { RouteProp } from "@react-navigation/native"
+import { RootStackPropsList } from "../../storage/StackParams"
+import { StackNavigationProp } from "@react-navigation/stack"
 
 type SavingsGoalCardProps = {
-    savingGoal: SavingsGoal
+    savingGoal: SavingsGoal;
+    navigation: StackNavigationProp<RootStackPropsList>;
+    previousScreenRef?: string
 }
 
 export const SavingsGoalCard = (props: SavingsGoalCardProps) => {
@@ -25,8 +30,12 @@ export const SavingsGoalCard = (props: SavingsGoalCardProps) => {
     ]
 
     return (
-        <TouchableOpacity style={styles.container}>
-            <Header3 style={{ marginBottom: 20 }}>{props.savingGoal.getName()}</Header3>
+        <TouchableOpacity 
+            style={styles.container}
+            // @ts-ignore
+            onPress={() => props.navigation.navigate("ViewSavingsGoal", { savingsGoal: props.savingGoal })}
+        >
+            <Header3 style={{ marginBottom: 20, textAlign: 'center' }}>{props.savingGoal.getName()}</Header3>
             <PieChart
                 data={chartData} 
                 radius={50}
@@ -70,7 +79,10 @@ export const SavingsGoalCardSmall = (props: SavingsGoalCardProps) => {
     ]
 
     return (
-        <TouchableOpacity style={styles.smallContainer}>
+        <TouchableOpacity 
+            style={styles.smallContainer}
+            onPress={() => props.navigation.navigate('ViewSavingsGoal', { savingsGoal: props.savingGoal, previousScreenRef: props.previousScreenRef ? props.previousScreenRef : undefined })}
+        >
             <PieChart
                 data={chartData} 
                 radius={20}
@@ -98,17 +110,24 @@ export const SavingsGoalCardSmall = (props: SavingsGoalCardProps) => {
     )
 }
 
-export const NewSavingsGoalButton = () => {
+type NewSavingsGoalButtonProps = {
+    callback: () => void
+    navigation: StackNavigationProp<RootStackPropsList>
+}
+
+export const NewSavingsGoalButton = (props: NewSavingsGoalButtonProps) => {
     return (
         <TouchableOpacity 
-        style={[
-            styles.container, 
-            {
-                backgroundColor: 'transparent',
-                borderWidth: 2,
-                borderColor: stylingConfig.colors.secondary
-            }
-        ]}
+            style={[
+                styles.container, 
+                {
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    borderColor: stylingConfig.colors.secondary
+                }
+            ]}
+            // @ts-expect-error
+            onPress={() => props.navigation.navigate('CreateSavingsGoal') && props.callback()}
         >
             <Header3 style={{
                 color: stylingConfig.colors.text.textSecondary,

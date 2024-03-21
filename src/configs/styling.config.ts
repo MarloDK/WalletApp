@@ -10,6 +10,7 @@ export const stylingConfig = {
             textLight: '#FFFFFF',
             textPrimary: '#212121',
             textSecondary: '#757575',
+            link: '#005A8D',
         },
         divider: '#BDBDBD',
         shadow: '#E0E0E0',

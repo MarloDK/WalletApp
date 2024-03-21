@@ -1,38 +1,44 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { FlatList, ScrollView, StyleSheet, View } from "react-native";
 import { RootStackPropsList } from "../storage/StackParams";
-import { Header2, Header3, Paragraph } from "../components/CustomTextComponents";
+import { Header2, Header3, Paragraph, CustomLink } from "../components/CustomTextComponents";
 import { stylingConfig } from "../configs/styling.config";
-import { LargeSlimCard, SmallSlimCard } from "../components/new/ScrollCardComponents";
+import { LargeSlimCard } from "../components/new/ScrollCardComponents";
 import { VerticalListItem } from "../components/new/ScrollCardComponents";
 import { getAccounts, getSavingsGoals } from "../storage/database";
 import { SavingsGoalCardSmall } from "../components/new/SavingsGoalCardComponent";
+import { useCallback, useState } from "react";
+import { Account } from "../storage/classes/AccountClass";
+import { SavingsGoal } from "../storage/classes/SavingsGoalClass";
+import { useFocusEffect } from "@react-navigation/native";
 
 type Props = {
     navigation: StackNavigationProp<RootStackPropsList, 'Home'>;
 }
 
 export const DashboardScreen = (props: Props) => {
-    const accounts = getAccounts();
-    const savingsGoals = getSavingsGoals();
+    const [accounts, setAccounts] = useState(Array<Account>());
+    const [savingsGoals, setSavingsGoals] = useState(Array<SavingsGoal>());
 
-    const createAccountCards = (): Array<JSX.Element> => {
-        let objects: Array<JSX.Element> = [];
-        accounts.forEach(account => {
-            objects.push(<LargeSlimCard account={account} />)
-        })
+    const [rerenderKey, setRerenderKey] = useState(0);
 
-        return objects;
+    const fetchData = () => {
+        const newAccounts = getAccounts();
+        const newSavingsGoals = getSavingsGoals();
+
+        setAccounts(newAccounts);
+        setSavingsGoals(newSavingsGoals);
+
+        setRerenderKey(oldKey => oldKey + 1)
     }
 
-    const createSavingsGoalsCards = (): Array<JSX.Element> => {
-        let objects: Array<JSX.Element> = [];
-        savingsGoals.forEach(savingsGoal => {
-            objects.push(<SavingsGoalCardSmall savingGoal={savingsGoal}/>)
-        })
+    useFocusEffect(
+        useCallback(() => {
+            fetchData();
 
-        return objects;
-    }
+            return () => {};
+        }, [])
+    )
 
     return (
         <View style={styles.appWrapper}>
@@ -58,28 +64,34 @@ export const DashboardScreen = (props: Props) => {
             </View>
             <View style={styles.container}>
                 <View style={styles.sectionContainer}>
-                    <Header2>Accounts</Header2>
-                    <ScrollView 
-                        style={styles.horizontalScrollWrapper}
-                        horizontal={true}
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+                        <Header2>Accounts</Header2>
+                        <CustomLink to={"/Accounts"}>See all</CustomLink>
+                    </View>
+                    <FlatList 
+                        key={rerenderKey}
+                        horizontal
+                        data={accounts}
                         alwaysBounceHorizontal={false}
                         bounces={false}
-
-                    >
-                        {createAccountCards()}
-                    </ScrollView>
+                        contentContainerStyle={styles.horizontalScrollWrapper}
+                        renderItem={({ item }) => <LargeSlimCard account={item} />}
+                    />
                 </View>
                 <View style={styles.sectionContainer}>
-                    <Header2>Goals</Header2>
-                    <ScrollView 
-                        style={styles.horizontalScrollWrapper}
-                        horizontal={true}
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+                        <Header2>Goals</Header2>
+                        <CustomLink to={"/Savings"}>See all</CustomLink>
+                    </View>
+                    <FlatList 
+                        key={rerenderKey}
+                        horizontal
+                        data={savingsGoals}
                         alwaysBounceHorizontal={false}
                         bounces={false}
-
-                    >
-                        {createSavingsGoalsCards()}
-                    </ScrollView>
+                        contentContainerStyle={styles.horizontalScrollWrapper}
+                        renderItem={({ item }) => <SavingsGoalCardSmall navigation={props.navigation} savingGoal={item} previousScreenRef="Dashboard" />}
+                    />
                 </View>
                 <View style={styles.sectionContainer}>
                     <Header2>Upcoming Expenses</Header2>
@@ -88,7 +100,6 @@ export const DashboardScreen = (props: Props) => {
                         horizontal={false}
                         alwaysBounceVertical={false}
                         bounces={false}
-
                     >
                         <VerticalListItem />
                     </ScrollView>
@@ -154,6 +165,7 @@ const styles = StyleSheet.create({
     },
     sectionContainer: {
         width: '100%',
+        alignSelf: 'stretch',
         paddingTop: 30,
     },
     horizontalScrollWrapper: {

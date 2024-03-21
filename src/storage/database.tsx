@@ -22,6 +22,10 @@ export const getAccounts = (): Array<Account> => {
     return [];
 }
 
+export const addAccount = (account: Account) => {
+    randomClasses.accounts.push(account);
+}
+
 export const getSavingsGoals = (): Array<SavingsGoal> => {
     if (generalConfig.devBuild) {
         return randomClasses.savingsGoals;
@@ -29,6 +33,10 @@ export const getSavingsGoals = (): Array<SavingsGoal> => {
 
     console.error('Database: Not fetching db, sending empty array');
     return [];
+}
+
+export const addSavingsGoal = (savingsGoal: SavingsGoal) => {
+    randomClasses.savingsGoals.push(savingsGoal);
 }
 
 export const getSubscriptions = (): Array<Subscription> => {

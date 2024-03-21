@@ -36,6 +36,11 @@ export const generateRandomClasses = (): { accounts: Array<Account>, savingsGoal
     let accounts = Array.from({ length: accountsToGenerate }, (): Account => generateRandomAccount(subscriptions));
     let loans = Array.from({ length: loansToGenerate }, genereateRandomLoan);
 
+    subscriptions.forEach(subscription => {
+        const randomAccount = accounts[getRandomInt(0, accounts.length)];
+        randomAccount.attachSubscription(subscription);
+    });
+
     return {
         accounts: !testingConfig.skipClasses.accounts ? accounts : [],
         savingsGoals: !testingConfig.skipClasses.savingsGoals ? savingsGoals : [],

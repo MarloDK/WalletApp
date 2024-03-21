@@ -1,9 +1,11 @@
 import React, { useRef, useState } from "react";
-import { AppText, AppTextSecondary } from "./CustomTextComponents";
+import { Header2, Header3, Paragraph } from "./CustomTextComponents";
 import { KeyboardTypeOptions, StyleSheet, TextInput, TextInputTextInputEventData, TouchableOpacity, View } from "react-native";
+import { stylingConfig } from "../configs/styling.config";
 
 type InputFieldProps = {
     name: string,
+    value: string,
     maxLength?: number,
     placeholder?: string,
     suffix?: string,
@@ -18,17 +20,18 @@ export const InputField = (props: InputFieldProps) => {
 
     return (
         <View style={[styles.container, props.flex ? {flex: props.flex} : {}]}>
-            <AppText style={styles.name}>{props.name}</AppText>
+            <Header2 style={styles.name}>{props.name}</Header2>
             <TouchableOpacity 
-                style={[styles.inputFieldWrapper, inputRef.current?.isFocused() === true  ? {borderColor: '#334056'} : {borderColor: '#202B3F'}]}
+                style={[styles.inputFieldWrapper, inputRef.current?.isFocused() === true  ? {borderColor: stylingConfig.colors.secondaryVar} : {borderColor: stylingConfig.colors.divider}]}
                 activeOpacity={1}
                 onPress={() => inputRef.current?.focus()}
             >
                 <TextInput 
                     ref={inputRef}
                     placeholder={props.placeholder}
-                    placeholderTextColor={'#202B3F'}
-                    onChangeText={(text: string) => props.onValueChange}
+                    placeholderTextColor={stylingConfig.colors.divider}
+                    onChangeText={(text: string) => props.onValueChange && props.onValueChange(text)}
+                    value={props.value}
                     style={styles.inputField}
                     keyboardType={props.keyboardType}
                     returnKeyType={'done'}
@@ -36,7 +39,7 @@ export const InputField = (props: InputFieldProps) => {
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                 />
-                <AppTextSecondary style={styles.suffix}>{props.suffix}</AppTextSecondary>
+                <Paragraph style={styles.suffix}>{props.suffix}</Paragraph>
             </TouchableOpacity>
         </View>
     )
@@ -48,7 +51,6 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 12,
-        fontFamily: 'Inter_500Medium',
         marginBottom: 10,
     },
     inputFieldWrapper: {
@@ -63,14 +65,14 @@ const styles = StyleSheet.create({
     },
     inputField: {
         fontSize: 16,
-        fontFamily: 'Inter_400Regular',
+        fontFamily: stylingConfig.fontWeight.light,
         alignSelf: 'stretch',
         height: '100%',
-        color: '#FFF',
+        color: stylingConfig.colors.text.textSecondary,
     },
     suffix: {
         fontSize: 12,
-        fontFamily: 'Inter_500Medium',
+        fontFamily: stylingConfig.fontWeight.medium,
         color: '#202B3F',
         paddingLeft: 15,
     }
