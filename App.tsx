@@ -25,6 +25,8 @@ import { CreateAccountScreen } from './src/screens/accounts/CreateAccountScreen'
 import { PaymentsScreen } from './src/screens/payments/PaymentsScreen';
 import { Stack, getHiddenScreenOptions } from './src/navigation/Stack';
 import { AccountsNavigation } from './src/navigation/AccountsNavigation';
+import { CreateSubscriptionScreen } from './src/screens/accounts/subscriptions/CreateSubscriptionScreen';
+import { EditSubscriptionScreen } from './src/screens/accounts/subscriptions/EditSubscriptionScreen';
 
 // Keep the splash screen visible while the app is loading fonts etc.
 SplashScreen.preventAutoHideAsync();
@@ -159,6 +161,17 @@ export default function App() {
           name='CreateAccount'
           component={CreateAccountScreen}
           options={getHiddenScreenOptions("New Account")}
+        />
+
+        <Stack.Screen
+          name="CreateSubscription"
+          component={CreateSubscriptionScreen}
+          options={getHiddenScreenOptions("Create Subscription")}
+        />
+        <Stack.Screen
+          name="EditSubscription"
+          component={EditSubscriptionScreen}
+          options={getHiddenScreenOptions("Edit Subscription")}
         />
 
 

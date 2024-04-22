@@ -12,7 +12,7 @@ type ViewSavingsGoalProps = {
 }
 
 export const ViewSavingsGoalScreen = ({ route, navigation }: ViewSavingsGoalProps) => {
-    const { savingsGoal, previousScreenRef } = route.params;
+    const { savingsGoal } = route.params;
 
     const savedPercentage = (savingsGoal.getSavedAmount() / savingsGoal.getTargetAmount()) * 100;
     const percentageLeft = 100 - savedPercentage;
@@ -51,8 +51,7 @@ export const ViewSavingsGoalScreen = ({ route, navigation }: ViewSavingsGoalProp
             <View style={{ flexDirection: 'row', gap: 50, marginTop: 150 }}>
                 <TouchableOpacity 
                     style={styles.navigationButtons}
-                    // @ts-expect-error
-                    onPress={() => previousScreenRef ? navigation.navigate(previousScreenRef) : navigation.navigate('Savings')}
+                    onPress={() => navigation.goBack()}
                 >
                     <Paragraph style={styles.navigationButtonsText}>Back</Paragraph>
                 </TouchableOpacity>

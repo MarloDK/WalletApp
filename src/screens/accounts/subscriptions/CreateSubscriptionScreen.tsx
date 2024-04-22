@@ -9,7 +9,7 @@ type CreateSubscriptionProps = {
     navigation: StackNavigationProp<RootStackPropsList, 'CreateSubscription'>,
 }
 
-const CreateSubscriptionScreen = ({route, navigation}: CreateSubscriptionProps) => {
+export const CreateSubscriptionScreen = ({route, navigation}: CreateSubscriptionProps) => {
     const { account } = route.params;
 
     return (

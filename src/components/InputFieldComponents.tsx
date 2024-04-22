@@ -5,7 +5,7 @@ import { stylingConfig } from "../configs/styling.config";
 
 type InputFieldProps = {
     name: string,
-    value: string,
+    value: string | number,
     maxLength?: number,
     placeholder?: string,
     suffix?: string,
@@ -18,6 +18,26 @@ export const InputField = (props: InputFieldProps) => {
     const inputRef = useRef<TextInput>(null);
     const [isFocused, setIsFocused] = useState(false);
 
+    if (typeof props.value === "number") {
+        props.value = props.value.toString();
+    }
+
+    const returnSafeInput = (input: string) => {
+        if (!props.onValueChange) {
+            return;
+        }
+
+        if (typeof props.value === 'string') {
+            return props.onValueChange(input.toString());
+        }
+
+        let inputAsNum = parseInt(input);
+        if (Number.isNaN(inputAsNum)) {
+            input = '';
+        }
+
+        props.onValueChange(input.toString());
+    }
     return (
         <View style={[styles.container, props.flex ? {flex: props.flex} : {}]}>
             <Header2 style={styles.name}>{props.name}</Header2>
@@ -30,8 +50,8 @@ export const InputField = (props: InputFieldProps) => {
                     ref={inputRef}
                     placeholder={props.placeholder}
                     placeholderTextColor={stylingConfig.colors.divider}
-                    onChangeText={(text: string) => props.onValueChange && props.onValueChange(text)}
-                    value={props.value}
+                    onChangeText={(text: string) => returnSafeInput(text)}
+                    value={props.value.toString()}
                     style={styles.inputField}
                     keyboardType={props.keyboardType}
                     returnKeyType={'done'}

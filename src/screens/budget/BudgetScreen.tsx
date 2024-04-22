@@ -2,10 +2,13 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { StyleSheet, View } from "react-native"
 import { RootStackPropsList } from "../../storage/StackParams";
 import { stylingConfig } from "../../configs/styling.config";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 type BudgetScreenProps = {
     navigation: StackNavigationProp<RootStackPropsList, 'Budget'>;
 }
+
+const Stack = createNativeStackNavigator();
 
 export const BudgetScreen = (props: BudgetScreenProps) => {
     return (
@@ -14,7 +17,7 @@ export const BudgetScreen = (props: BudgetScreenProps) => {
 
             </View>
             <View style={styles.container}>
-
+                
             </View>
         </View>
     )
@@ -36,7 +39,7 @@ const styles = StyleSheet.create({
     headerExtension: {
         backgroundColor: stylingConfig.colors.primary,
         width: '100%',
-        height: 60,
+        height: 30,
         alignItems: 'center',
         paddingHorizontal: '5%',
     },

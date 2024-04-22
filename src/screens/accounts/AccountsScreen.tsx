@@ -1,18 +1,13 @@
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, FlatList } from "react-native"
-import { Header4, Paragraph, Subheader } from "../../components/CustomTextComponents"
-import { LargeSlimCard } from "../../components/new/ScrollCardComponents"
+import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native"
+import { Paragraph, Subheader } from "../../components/CustomTextComponents"
 import { stylingConfig } from "../../configs/styling.config"
-import { getAccounts, getSavingsGoals } from "../../storage/database"
-import { LineChart } from "react-native-gifted-charts"
-import { NewSavingsGoalButton, SavingsGoalCard } from "../../components/new/SavingsGoalCardComponent"
-import { SavingsGoal } from "../../storage/classes/SavingsGoalClass"
+import { getAccounts } from "../../storage/database"
 import { RootStackPropsList } from "../../storage/StackParams"
 import { StackNavigationProp } from "@react-navigation/stack"
-import { useCallback, useState } from "react"
-import { useFocusEffect } from "@react-navigation/native"
+import { useEffect, useState } from "react"
 import { Account } from "../../storage/classes/AccountClass"
 import { AccountListItem } from "../../components/new/AccountCardComponents"
-import { FontAwesome6, Ionicons } from "@expo/vector-icons"
+import { FontAwesome6 } from "@expo/vector-icons"
 
 type AccountsScreenProps = {
     navigation: StackNavigationProp<RootStackPropsList, 'Savings'>;
@@ -27,8 +22,11 @@ export const AccountsScreen = (props: AccountsScreenProps) => {
     const fetchItems = async () => {
         console.log("Fetching Accounts");
 
-        const newSavingsGoals = getAccounts();
-        setAccounts(newSavingsGoals);
+        const newAccounts = getAccounts();
+
+        if (newAccounts != accounts) {
+            setAccounts(newAccounts);
+        }
 
         calculateTotalBalance();
         setRerenderKey(oldKey => oldKey + 1);   // Force a rerender since React Native doesn't
@@ -45,13 +43,14 @@ export const AccountsScreen = (props: AccountsScreenProps) => {
         setTotalBalance(newTotalBalance);
     }
 
-    useFocusEffect(
-        useCallback(() => {
+    useEffect(() => {
+        const onFocus = props.navigation.addListener('focus', () => {
             fetchItems();
+        });
 
-            return () => {}
-        }, [])
-    )
+        // Return constants to avoid memory leak
+        return onFocus;
+    })
 
     const renderItem = (item: any) => {
         return <AccountListItem navigation={props.navigation} account={item} />
