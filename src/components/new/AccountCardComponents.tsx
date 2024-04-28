@@ -25,11 +25,11 @@ export const AccountCard = (props: AccountCardProps) => {
             onPress={() => props.navigation.navigate('ViewAccount', { account: props.account })}
         >
             <View style={styles.iconContainer}>
-                {props.account.getIcon()}
+                {props.account.icon}
             </View>
             <View style={styles.informationWrapper}>
-                <Header3>{props.account.getName()}</Header3>
-                <Paragraph>Balance: ${props.account.getBalance()}</Paragraph>
+                <Header3>{props.account.name}</Header3>
+                <Paragraph>Balance: ${props.account.balance}</Paragraph>
             </View>
             <View style={styles.buttonContainer}>
                 <AntDesign
@@ -69,7 +69,7 @@ export const AccountListItem = (props: AccountCardProps) => {
                     borderColor: stylingConfig.colors.secondaryVar,
                 }}
             >
-                {props.account.getIcon()}
+                {props.account.icon}
             </View>
             <View
                 style={{
@@ -84,8 +84,8 @@ export const AccountListItem = (props: AccountCardProps) => {
                         justifyContent: 'space-between'
                     }}
                 >
-                    <Header4>{props.account.getName()}</Header4>
-                    <Paragraph>{props.account.getFullId()}</Paragraph>
+                    <Header4>{props.account.name}</Header4>
+                    <Paragraph>{props.account.fullId}</Paragraph>
                 </View>
                 <View 
                     style={{
@@ -93,8 +93,8 @@ export const AccountListItem = (props: AccountCardProps) => {
                         justifyContent: 'space-between'
                     }}
                 >
-                    <Header4 style={{ textAlign: 'right' }}>$ {props.account.getBalance()}</Header4>
-                    <Paragraph style={{ textAlign: 'right' }}>{props.account.getLatestTransaction() ? '$ ' + props.account.getLatestTransaction().transactionValue : ' ' }</Paragraph>
+                    <Header4 style={{ textAlign: 'right' }}>$ {props.account.balance}</Header4>
+                    <Paragraph style={{ textAlign: 'right' }}>{props.account.latestTransaction ? '$ ' + props.account.latestTransaction.transactionValue : ' ' }</Paragraph>
                 </View>
             </View>
         </TouchableOpacity>

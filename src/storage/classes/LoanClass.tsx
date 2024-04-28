@@ -24,35 +24,21 @@ export class Loan {
         }
     }
 
-    /**
-     * Gets the name of the loan.
-     * @returns The name of the loan.
-     */
-    getName(): string {
+
+    get name(): string {
         return this._name;
     }
 
-    /**
-     * Sets the name of the loan.
-     * @param name The new name of the loan.
-     */
-    setName(name: string) {
+    set name(name: string) {
         this._name = name;
     }
 
-    /**
-     * Gets the icon for the loan.
-     * @returns The icon for the loan.
-     */
-    getIcon(): JSX.Element {
+
+    get icon(): JSX.Element {
         return this._icon;
     }
 
-    /**
-     * Sets the icon for the loan.
-     * @param icon The new icon for the loan.
-     */
-    setIcon(icon: JSX.Element) {
+    set icon(icon: JSX.Element) {
         this._icon = icon;
     }
 
@@ -64,35 +50,19 @@ export class Loan {
         this._paid += amount;
     }
 
-    /**
-     * Gets the total amount paid off from the loan.
-     * @returns The total amount paid off.
-     */
-    getAmountPaidOff(): number {
+    get amountPaidOff(): number {
         return this._paid;
     }
 
-    /**
-     * Calculates and returns the remaining debt of the loan.
-     * @returns The remaining amount to be paid off.
-     */
-    getRemainingDebt(): number {
+    get remainingDebt(): number {
         return this.amount - this._paid;
     }
 
-    /**
-     * Gets the interest rate of the loan.
-     * @returns The interest rate.
-     */
-    getInterest(): number {
+    get interest(): number {
         return this._interest;
     }
 
-    /**
-     * Sets the interest rate of the loan.
-     * @param interest The new interest rate.
-     */
-    setInterest(interest: number) {
+    set interest(interest: number) {
         this._interest = interest;
     }
 }

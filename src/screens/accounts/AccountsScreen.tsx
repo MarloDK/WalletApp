@@ -8,6 +8,7 @@ import { useEffect, useState } from "react"
 import { Account } from "../../storage/classes/AccountClass"
 import { AccountListItem } from "../../components/new/AccountCardComponents"
 import { FontAwesome6 } from "@expo/vector-icons"
+import { CreateNewButton } from "../../components/new/CreateNewButton"
 
 type AccountsScreenProps = {
     navigation: StackNavigationProp<RootStackPropsList, 'Savings'>;
@@ -37,7 +38,7 @@ export const AccountsScreen = (props: AccountsScreenProps) => {
         let newTotalBalance: number = 0;
 
         accounts.forEach(account => {
-            newTotalBalance += account.getBalance();
+            newTotalBalance += account.balance;
         });
 
         setTotalBalance(newTotalBalance);
@@ -50,7 +51,7 @@ export const AccountsScreen = (props: AccountsScreenProps) => {
 
         // Return constants to avoid memory leak
         return onFocus;
-    })
+    });
 
     const renderItem = (item: any) => {
         return <AccountListItem navigation={props.navigation} account={item} />
@@ -72,27 +73,8 @@ export const AccountsScreen = (props: AccountsScreenProps) => {
                     renderItem={({item}) => renderItem(item)}
                     keyExtractor={(item, index) => `account-${index}`}
                 />
-                <TouchableOpacity
-                    style={{
-                        position: 'absolute',
-                        backgroundColor: stylingConfig.colors.secondary,
-                        height: 60,
-                        width: 60,
-                        borderRadius: 30,
-                        top: '90%',
-                        left: '90%',
-                        shadowColor: stylingConfig.colors.shadow,
-                        shadowOffset: {width: 0, height: 4},
-                        shadowOpacity: 1,
-                        shadowRadius: 4,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                    onPress={() => props.navigation.navigate('CreateAccount', { updateList: fetchItems })}
-                >
-                    <FontAwesome6 name="add" size={25} color="white" />
-                </TouchableOpacity>
             </View>
+            <CreateNewButton onPress={props.navigation.navigate('CreateAccount', { updateList: fetchItems })} />
         </View>
     )
 }

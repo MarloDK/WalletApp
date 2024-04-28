@@ -1,6 +1,7 @@
 import { generalConfig } from "../configs/general.config"
 import { generateRandomClasses } from "../utils/randomClassInstances.spec";
 import { Account } from "./classes/AccountClass";
+import { Expense } from "./classes/ExpenseClass";
 import { Loan } from "./classes/LoanClass";
 import { SavingsGoal } from "./classes/SavingsGoalClass";
 import { Subscription } from "./classes/SubscriptionClass";
@@ -51,6 +52,15 @@ export const getSubscriptions = (): Array<Subscription> => {
 export const getLoans = (): Array<Loan> => {
     if (generalConfig.devBuild) {
         return randomClasses.loans;
+    }
+
+    console.error('Database: Not fetching db, sending empty array');
+    return [];
+}
+
+export const getExpenses = (): Array<Expense> => {
+    if (generalConfig.devBuild) {
+        return randomClasses.expenses;
     }
 
     console.error('Database: Not fetching db, sending empty array');

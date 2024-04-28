@@ -88,6 +88,7 @@ export const CreateAccountScreen = (props: CreateAccountProps) => {
                     name="Balance" 
                     maxLength={50}
                     keyboardType="number-pad"
+                    suffix="USD"
                     onValueChange={(text) => setBalance(text === '' ? 0 : parseInt(text))}
                     value={balance === 0 ? '' : balance.toString()}
                 />

@@ -15,19 +15,12 @@ export class Transaction {
         readonly transactionValue: number
     ) { }
 
-    /**
-     * Gets the name associated with the transaction.
-     * @returns The name associated with the transaction.
-     */
-    getName(): string {
+
+    get name(): string {
         return this._name;
     }
 
-    /**
-     * Sets a new name for the transaction.
-     * @param name The new name to associate with the transaction.
-     */
-    setName(name: string) {
+    set name(name: string) {
         this._name = name;
     }
 }

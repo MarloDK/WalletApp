@@ -19,7 +19,7 @@ export const ViewAccountScreen = ({route, navigation}: ViewAccountProps) => {
     const { account } = route.params;
 
     navigation.setOptions({ 
-        headerTitle: account.getName(), 
+        headerTitle: account.name, 
         headerTitleStyle: {
             fontFamily: stylingConfig.fontWeight.semiBold,
             color: stylingConfig.colors.text.textLight,
@@ -28,7 +28,7 @@ export const ViewAccountScreen = ({route, navigation}: ViewAccountProps) => {
     });
 
     const getSubscriptionCards = (): Array<JSX.Element> => {
-        const subscriptions: Array<Subscription> = account.getAttachedSubscriptions();
+        const subscriptions: Array<Subscription> = account.attachedSubscriptions;
         let subscriptionCards: Array<JSX.Element> = Array<JSX.Element>();
 
         subscriptions.forEach(subscription => {
@@ -43,7 +43,7 @@ export const ViewAccountScreen = ({route, navigation}: ViewAccountProps) => {
     return (
         <View style={styles.appWrapper}>
             <View style={styles.headerExtension}>
-                <Header style={{ color: stylingConfig.colors.text.textLight }}>$ {account.getBalance()}</Header>
+                <Header style={{ color: stylingConfig.colors.text.textLight }}>$ {account.balance}</Header>
             </View>
             <View style={styles.container}>
                 <View style={styles.sectionContainer}>

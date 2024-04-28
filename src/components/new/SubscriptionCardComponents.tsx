@@ -14,12 +14,12 @@ type SubscriptionCardProps = {
 
 export const SubscriptionCard = (props: SubscriptionCardProps) => {
     const getFormattedBillingDate = (): string => {
-        const billingDate = props.subscription.getBillingDate();
+        const billingDate = props.subscription.billingDate;
         const year = billingDate.getFullYear();
         const month = billingDate.getMonth();
         const date = billingDate.getDate();
 
-        if (props.subscription.getSubscriptionPeriod() == PaymentPeriod.YEARLY) {
+        if (props.subscription.subscriptionPeriod == PaymentPeriod.YEARLY) {
             return `${date}/${month}/${year}`;
         }
 
@@ -35,17 +35,17 @@ export const SubscriptionCard = (props: SubscriptionCardProps) => {
                 <View style={styles.iconContainer}>
                     <Image 
                         style={styles.image}
-                        source={props.subscription.getLogoPath()}
+                        source={props.subscription.logoPath}
                     />
                 </View>
                 <View style={styles.informationWrapper}>
-                    <Header2>{props.subscription.getName()}</Header2>
+                    <Header2>{props.subscription.name}</Header2>
                     <Paragraph>{getFormattedBillingDate()}</Paragraph>
                 </View>
             </View>
             <View style={styles.valueContainer}>
-                <Paragraph style={styles.valueText}>{props.subscription.getPrice()} DKK</Paragraph>
-                <Paragraph style={{ textAlign: 'right' }}>/ {props.subscription.getSubscriptionPeriodName()}</Paragraph>
+                <Paragraph style={styles.valueText}>{props.subscription.price} DKK</Paragraph>
+                <Paragraph style={{ textAlign: 'right' }}>/ {props.subscription.subscriptionPeriodName}</Paragraph>
             </View>
         </TouchableOpacity>
     )

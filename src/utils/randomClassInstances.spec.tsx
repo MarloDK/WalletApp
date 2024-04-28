@@ -8,8 +8,9 @@ import { PaymentPeriod } from "../storage/PaymentPeriodEnum";
 import { generalConfig } from "../configs/general.config";
 import { Transaction } from "../storage/classes/TransactionClass";
 import { SavingsGoal } from "../storage/classes/SavingsGoalClass";
+import { Expense } from "../storage/classes/ExpenseClass";
 
-export const generateRandomClasses = (): { accounts: Array<Account>, savingsGoals: Array<SavingsGoal>, subscriptions: Array<Subscription>, loans: Array<Loan>, } => {
+export const generateRandomClasses = (): { accounts: Array<Account>, savingsGoals: Array<SavingsGoal>, subscriptions: Array<Subscription>, loans: Array<Loan>, expenses: Array<Expense> } => {
     if (!generalConfig.devBuild) {
         console.warn('Tried to generate random classes during production build');
         return {
@@ -17,6 +18,7 @@ export const generateRandomClasses = (): { accounts: Array<Account>, savingsGoal
             savingsGoals: Array<SavingsGoal>(),
             subscriptions: Array<Subscription>(),
             loans: Array<Loan>(),
+            expenses: Array<Expense>(),
         };
     }
 
@@ -27,6 +29,7 @@ export const generateRandomClasses = (): { accounts: Array<Account>, savingsGoal
     const savingsGoalsToGenerate = getRandomInt(instanceVariationMin, instanceVariationMax);
     const subscriptionsToGenerate = getRandomInt(instanceVariationMin, instanceVariationMax);
     const loansToGenerate = getRandomInt(instanceVariationMin, instanceVariationMax);
+    const expensesToGenerate = getRandomInt(instanceVariationMin, instanceVariationMax);
 
     // (Refractor from using for loops and array.push)
     // Generate x amount of random class
@@ -35,10 +38,14 @@ export const generateRandomClasses = (): { accounts: Array<Account>, savingsGoal
     let savingsGoals = Array.from({ length: savingsGoalsToGenerate }, generateRandomSavingsGoal);
     let accounts = Array.from({ length: accountsToGenerate }, (): Account => generateRandomAccount(subscriptions));
     let loans = Array.from({ length: loansToGenerate }, genereateRandomLoan);
+    let expenses = Array.from({ length: expensesToGenerate }, generateRandomExpense);
 
     subscriptions.forEach(subscription => {
         const randomAccount = accounts[getRandomInt(0, accounts.length)];
-        randomAccount.attachSubscription(subscription);
+
+        if (randomAccount) {
+            randomAccount.attachSubscription(subscription);
+        }
     });
 
     return {
@@ -46,6 +53,7 @@ export const generateRandomClasses = (): { accounts: Array<Account>, savingsGoal
         savingsGoals: !testingConfig.skipClasses.savingsGoals ? savingsGoals : [],
         subscriptions: !testingConfig.skipClasses.subscriptions ? subscriptions : [],
         loans: !testingConfig.skipClasses.loans ? loans : [],
+        expenses: !testingConfig.skipClasses.expenses ? expenses : [],
     }
 }
 
@@ -171,8 +179,28 @@ function genereateRandomLoan(): Loan {
     return newLoan;
 }
 
+function generateRandomExpense(): Expense {
+    let name = testingConfig.expenseSettings.names[getRandomInt(0, testingConfig.expenseSettings.names.length)];
+    let allocated = getRandomInt(
+        testingConfig.expenseSettings.expenseAllocatedVariation.min,
+        testingConfig.expenseSettings.expenseAllocatedVariation.max
+    );
+
+    let spentPercentage = getRandomInt(
+        testingConfig.expenseSettings.expenseSpentPercentage.min,
+        testingConfig.expenseSettings.expenseSpentPercentage.max
+    );
+
+    let newExpense = new Expense(
+        name,
+        allocated,
+        allocated * (spentPercentage / 100),
+    )
+    return  newExpense;
+}
+
 const generateTransactionHistory = (account: Account, historyLength: number, userSubscriptions: Array<Subscription>) => {
-    let accountBalance = account.getBalance();
+    let accountBalance = account.balance;
 
     for (let i = 0; i < historyLength; i++) {
         let positiveTransaction: boolean = Math.random() >= .3;
@@ -197,7 +225,7 @@ const generateTransactionHistory = (account: Account, historyLength: number, use
         }
 
         userSubscriptions.map((subscription, index) => {
-            let subscriptionBillingDate  = subscription.getBillingDate();
+            let subscriptionBillingDate  = subscription.billingDate;
             subscriptionBillingDate = new Date(
                 subscriptionBillingDate.getFullYear(),
                 subscriptionBillingDate.getMonth() + i,
@@ -205,14 +233,14 @@ const generateTransactionHistory = (account: Account, historyLength: number, use
             )
 
             account.addTransaction(new Transaction(
-                subscription.getName() + " Inc.",
+                subscription.name + " Inc.",
                 subscriptionBillingDate.toISOString(),
                 accountBalance,
-                accountBalance - subscription.getPrice(),
-                subscription.getPrice(),
+                accountBalance - subscription.price,
+                subscription.price,
             ));
 
-            accountBalance -= subscription.getPrice();
+            accountBalance -= subscription.price;
         });
 
     }

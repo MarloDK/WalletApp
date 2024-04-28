@@ -13,11 +13,11 @@ export const LargeSlimCard = (props: LargeSlimCardProps) => {
     return (
         <TouchableOpacity style={[styles.cardContainer, styles.largeSlimCardContainer]}>
             <View style={styles.iconContainer}>
-                {props.account.getIcon()}
+                {props.account.icon}
             </View>
             <View style={styles.informationWrapper}>
-                <Header3>{props.account.getName()}</Header3>
-                <Paragraph>Balance: ${props.account.getBalance()}</Paragraph>
+                <Header3>{props.account.name}</Header3>
+                <Paragraph>Balance: ${props.account.balance}</Paragraph>
             </View>
             <View style={styles.buttonContainer}>
                 <AntDesign 

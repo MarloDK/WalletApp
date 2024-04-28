@@ -11,51 +11,28 @@ export class SavingsGoal {
         private _savedAmount: number, 
     ) { }
 
-    /**
-     * Gets the name of the savings goal.
-     * @returns The name of the savings goal.
-     */
-    getName(): string {
+
+    get name(): string {
         return this._name;
     }
 
-    /**
-     * Sets the name of the savings goal.
-     * @param name The new name of the savings goal.
-     */
-    setName(name: string) {
+    set name(name: string) {
         this._name = name;
     }
 
-    /**
-     * Gets the target for the savings goal.
-     * @returns The target for the savings goal.
-     */
-    getTargetAmount(): number {
+    get targetAmount(): number {
         return this._targetAmount;
     }
     
-    /**
-     * Sets the target for the savings goal.
-     * @param amnt The new target for the savings goal.
-     */
-    setTargetAmount(amnt: number) {
+    set targetAmount(amnt: number) {
         this._targetAmount = amnt;
     }
 
-    /**
-     * Gets the saved amount of money for the savings goal.
-     * @returns The saved amount of money for the savings goal.
-     */
-    getSavedAmount(): number {
+    get savedAmount(): number {
         return this._savedAmount;
     }
         
-    /**
-     * Sets the saved amount of money for the savings goal.
-     * @param amnt The new saved amount of money for the savings goal.
-     */
-    setSavedAmount(amnt: number) {
+    set savedAmount(amnt: number) {
         this._savedAmount = amnt;
     }
 

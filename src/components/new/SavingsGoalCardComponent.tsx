@@ -14,7 +14,7 @@ type SavingsGoalCardProps = {
 }
 
 export const SavingsGoalCard = (props: SavingsGoalCardProps) => {
-    const savedPercentage = (props.savingGoal.getSavedAmount() / props.savingGoal.getTargetAmount()) * 100;
+    const savedPercentage = (props.savingGoal.savedAmount / props.savingGoal.targetAmount) * 100;
     const percentageLeft = 100 - savedPercentage;
 
 
@@ -35,7 +35,7 @@ export const SavingsGoalCard = (props: SavingsGoalCardProps) => {
             // @ts-ignore
             onPress={() => props.navigation.navigate("ViewSavingsGoal", { savingsGoal: props.savingGoal })}
         >
-            <Header3 style={{ marginBottom: 20, textAlign: 'center' }}>{props.savingGoal.getName()}</Header3>
+            <Header3 style={{ marginBottom: 20, textAlign: 'center' }}>{props.savingGoal.name}</Header3>
             <PieChart
                 data={chartData} 
                 radius={50}
@@ -47,13 +47,13 @@ export const SavingsGoalCard = (props: SavingsGoalCardProps) => {
                         fontFamily: stylingConfig.fontWeight.medium 
                     }}
                 >
-                    ${props.savingGoal.getSavedAmount()}
+                    ${props.savingGoal.savedAmount}
                 </Paragraph>
                 <Paragraph 
                     style={{ 
                         color: stylingConfig.colors.text.textSecondary
                     }}
-                > / {props.savingGoal.getTargetAmount()}
+                > / {props.savingGoal.targetAmount}
                 
                 </Paragraph>
             </View>
@@ -63,7 +63,7 @@ export const SavingsGoalCard = (props: SavingsGoalCardProps) => {
 }
 
 export const SavingsGoalCardSmall = (props: SavingsGoalCardProps) => {
-    const savedPercentage = (props.savingGoal.getSavedAmount() / props.savingGoal.getTargetAmount()) * 100;
+    const savedPercentage = (props.savingGoal.savedAmount / props.savingGoal.targetAmount) * 100;
     const percentageLeft = 100 - savedPercentage;
 
 
@@ -88,7 +88,7 @@ export const SavingsGoalCardSmall = (props: SavingsGoalCardProps) => {
                 radius={20}
             />
             <View style={styles.infoContainer}>
-                <Header3 style={{ fontSize: 14 }}>{props.savingGoal.getName()}</Header3>
+                <Header3 style={{ fontSize: 14 }}>{props.savingGoal.name}</Header3>
                 <View style={{ flexDirection: 'row', width: '100%'}}>
                     <Paragraph 
                         style={{ 
@@ -96,13 +96,13 @@ export const SavingsGoalCardSmall = (props: SavingsGoalCardProps) => {
                             fontFamily: stylingConfig.fontWeight.medium 
                         }}
                     >
-                        ${props.savingGoal.getSavedAmount()}
+                        ${props.savingGoal.savedAmount}
                     </Paragraph>
                     <Paragraph 
                         style={{ 
                             color: stylingConfig.colors.text.textSecondary
                         }}
-                    > / {props.savingGoal.getTargetAmount()}</Paragraph>
+                    > / {props.savingGoal.targetAmount}</Paragraph>
                     <Paragraph style={{ color: stylingConfig.colors.secondary }}> ({Math.floor(savedPercentage)}%)</Paragraph>
                 </View>
             </View>

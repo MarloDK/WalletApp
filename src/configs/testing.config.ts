@@ -5,6 +5,7 @@ export const testingConfig = {
         savingsGoals: false,
         subscriptions: false,
         loans: false,
+        expenses: false,
     },
     classInstanceVariation: {
         min: 1,
@@ -115,5 +116,23 @@ export const testingConfig = {
             'Sparekassen Thy',
             'Forældre',
         ]
+    },
+    expenseSettings: {
+        expenseAllocatedVariation: {
+            min: 10,
+            max: 1000,
+        },
+        expenseSpentPercentage: {
+            min: 0,
+            max: 100,
+        },
+        names: [
+            'Groceries',
+            'Electricity',
+            'Phone',
+            'Gas',
+            'Water and sewer',
+            'Transportation',
+        ],
     }
 }

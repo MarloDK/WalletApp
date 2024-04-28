@@ -17,47 +17,32 @@ export class Subscription {
         private _billingDate: Date,
     ) { }
 
-    /**
-     * Gets the name of the subscription service.
-     * @returns The name of the subscription service.
-     */
-    getName(): string {
+
+    get name(): string {
         return this._serviceName;
     }
 
-    /**
-     * Sets a new name for the subscription service.
-     * @param name The new name for the subscription service.
-     */
-    setName(name: string) {
+    set name(name: string) {
         this._serviceName = name;
     }
 
-    /**
-     * Gets the price of the subscription service.
-     * @returns The price of the subscription service.
-     */
-    getPrice(): number {
+    get price(): number {
         return this._price;
     }
 
-    /**
-     * Gets the monthly price of the subscription service.
-     * @returns The monthly price of the subscription service.
-     */
-    getMonthlyPrice(): number {
+    get monthlyPrice(): number {
         switch (this._subscriptionPeriod) {
             case PaymentPeriod.MONTHLY:
-                return this.getPrice();
+                return this.price;
 
             case PaymentPeriod.QUARTERLY:
-                return this.getPrice() / 3;
+                return this.price / 3;
 
             case PaymentPeriod.HALF_YEARLY:
-                return this.getPrice() / 6;
+                return this.price / 6;
 
             case PaymentPeriod.YEARLY:
-                return this.getPrice() / 12;
+                return this.price / 12;
         
             default:
                 break;
@@ -65,27 +50,15 @@ export class Subscription {
         return this._price;
     }
 
-    /**
-     * Sets a new name for the subscription service.
-     * @param name The new name for the subscription service.
-     */
-    setPrice(price: number) {
+    set price(price: number) {
         this._price = price;
     }
 
-    /**
-     * Gets the period the user pays to stays subscribed for.
-     * @returns A payment period representing the period the users pays for.
-     */
-    getSubscriptionPeriod(): PaymentPeriod {
+    get subscriptionPeriod(): PaymentPeriod {
         return this._subscriptionPeriod;
     }
 
-    /**
-     * Gets the period the user pays to stays subscribed for.
-     * @returns The name of the period as a string.
-     */
-    getSubscriptionPeriodName(): string {
+    get subscriptionPeriodName(): string {
         switch (this._subscriptionPeriod) {
             case PaymentPeriod.MONTHLY:
                 return "måned";
@@ -105,35 +78,20 @@ export class Subscription {
         return "Fejl";
     }
 
-    /**
-     * Sets a new subscription period.
-     * @param period The new subscription period for the service.
-     */
-    setSubscriptionPeriod(period: PaymentPeriod) {
+    set subscriptionPeriod(period: PaymentPeriod) {
         this._subscriptionPeriod = period;
     }
 
-    /**
-     * Gets the billing date for the subscription.
-     * @returns A date object representing the next billing date.
-     */
-    getBillingDate(): Date {
+    get billingDate(): Date {
         return this._billingDate;
     }
 
-    /**
-     * Gets the path to the logo of subscription service.
-     * @returns A string with the path to the logo file.
-     */
-    getLogoPath() {
+
+    get logoPath(): any {
         return this._serviceLogo;
     }
 
-    /**
-     * Sets the path to the logo of subscription service.
-     * @params path The path to the image for the logo of subscription service.
-     */
-    setLogoPath(path: string) {
+    set logoPath(path: string) {
         this._serviceLogo = path;
     }
 }

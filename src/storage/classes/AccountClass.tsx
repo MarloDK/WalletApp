@@ -38,79 +38,53 @@ export class Account {
         }
     }
 
-    /**
-     * Gets the name of the account holder.
-     * @returns The name of the account holder.
-     */
-    getName(): string {
+
+
+    get name(): string {
         return this._name;
     }
 
-    /**
-     * Sets the name of the account holder.
-     * @param name The new name of the account holder.
-     */
-    setName(name: string) {
+    set name(name: string) {
         this._name = name;
     }
 
-    /**
-     * Gets the icon for the account.
-     * @returns The icon for the account.
-     */
-    getIcon(): JSX.Element {
+    get icon(): JSX.Element {
         return this._icon;
     }
 
-    /**
-     * Sets the icon for the account.
-     * @param icon The new icon for the account.
-     */
-    setIcon(icon: JSX.Element) {
+    set icon(icon: JSX.Element) {
         this._icon = icon;
     }
 
-    /**
-     * Gets the full id of the account (xxxx xxxxxxxxxx).
-     * @returns The full id of the account formatted as xxxx xxxxxxxxxx.
-     */
-    getFullId(): string {
+    get fullId(): string {
         return `${this.bankId} ${this.accountId}`;
     }
 
-    /**
-     * Gets the balance of the account.
-     * @returns The balance of the account.
-     */
-    getBalance(): number {
+    get balance(): number {
         return this._balance;
     }
 
     /**
-     * Gets the balance of the account.
-     * @returns The balance of the account.
+     * Deposits money into the balance of the account.
+     * @param amount The amount to deposit.
      */
     deposit(amount: number) {
         this._balance += amount;
     }
 
     /**
-     * Gets the balance of the account.
-     * @returns The balance of the account.
+     * Withdraws money from the balance of the account.
+     * @param amount The amount to withdraw.
      */
     withdraw(amount: number) {
         let tempBalance = this._balance - amount;
 
         if (this.accountType === AccountType.DEBIT && tempBalance < 0)
-            return console.warn(`Couldn't withdraw ${amount} from account ${this.getFullId()}. \nBalance would've been ${tempBalance}.`);
+            return console.warn(`Couldn't withdraw ${amount} from account ${this.fullId}. \nBalance would've been ${tempBalance}.`);
         this._balance -= amount;
     }
 
-    /**
-     * Gets the full transaction history of the account.
-     * @returns An array of transaction objects.
-     */
-    getTransactionHistory(): Array<Transaction> {
+    get transactionHistory(): Array<Transaction> {
         return this._transactionHistory;
     }
 
@@ -132,20 +106,12 @@ export class Account {
             this._transactionHistory.splice(indexOfTransaction);
     }
 
-    /**
-     * Gets the latest transaction that has occured.
-     * @returns The latest transaction that has occured.
-     */
-    getLatestTransaction(): Transaction {
+    get latestTransaction(): Transaction {
         return this._transactionHistory[this._transactionHistory.length - 1];
     }
 
 
-    /**
-     * Gets the attached subscriptions to the account.
-     * @returns An array of subscription objects.
-     */
-    getAttachedSubscriptions(): Array<Subscription> {
+    get attachedSubscriptions(): Array<Subscription> {
         return this._attachedSubscriptions;
     }
 

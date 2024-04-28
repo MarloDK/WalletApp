@@ -40,12 +40,12 @@ export const EditSubscriptionScreen = ({route, navigation}: EditSubscriptionProp
     })
 
     const fetchSubscriptionData = () => {
-        setName(subscription.getName());
-        setPrice(subscription.getPrice().toString());
-        setPaymentPeriod(subscription.getSubscriptionPeriodName());
-        setBillingDateYear(subscription.getBillingDate().getFullYear().toString());
-        setBillingDateMonth(subscription.getBillingDate().getMonth().toString());
-        setBillingDateDay(subscription.getBillingDate().getDate().toString());
+        setName(subscription.name);
+        setPrice(subscription.price.toString());
+        setPaymentPeriod(subscription.subscriptionPeriodName);
+        setBillingDateYear(subscription.billingDate.getFullYear().toString());
+        setBillingDateMonth(subscription.billingDate.getMonth().toString());
+        setBillingDateDay(subscription.billingDate.getDate().toString());
     }
 
     const clearInputs = () => {
@@ -65,8 +65,8 @@ export const EditSubscriptionScreen = ({route, navigation}: EditSubscriptionProp
             return console.warn("Price as number was NaN!");
         }
 
-        subscription.setName(name);
-        subscription.setPrice(parseInt(price));
+        subscription.name = name;
+        subscription.price = parseInt(price);
 
         navigation.goBack();
     }
