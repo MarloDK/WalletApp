@@ -9,6 +9,7 @@ import { RootStackPropsList } from "../../storage/StackParams";
 import { useState } from "react";
 import { Subscription } from "../../storage/classes/SubscriptionClass";
 import { SubscriptionCard } from "./SubscriptionCardComponents";
+import { formatNumber } from "../../utils/NumberFormatter";
 
 type AccountCardProps = {
     account: Account;
@@ -93,8 +94,8 @@ export const AccountListItem = (props: AccountCardProps) => {
                         justifyContent: 'space-between'
                     }}
                 >
-                    <Header4 style={{ textAlign: 'right' }}>$ {props.account.balance}</Header4>
-                    <Paragraph style={{ textAlign: 'right' }}>{props.account.latestTransaction ? '$ ' + props.account.latestTransaction.transactionValue : ' ' }</Paragraph>
+                    <Header4 style={{ textAlign: 'right' }}>$ {formatNumber(props.account.balance)}</Header4>
+                    <Paragraph style={{ textAlign: 'right' }}>{props.account.latestTransaction ? '$ ' + formatNumber(props.account.latestTransaction.transactionValue) : ' ' }</Paragraph>
                 </View>
             </View>
         </TouchableOpacity>

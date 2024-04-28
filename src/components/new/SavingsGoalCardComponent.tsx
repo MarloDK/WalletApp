@@ -6,6 +6,7 @@ import { SavingsGoal } from "../../storage/classes/SavingsGoalClass"
 import { RouteProp } from "@react-navigation/native"
 import { RootStackPropsList } from "../../storage/StackParams"
 import { StackNavigationProp } from "@react-navigation/stack"
+import { formatNumber } from "../../utils/NumberFormatter"
 
 type SavingsGoalCardProps = {
     savingGoal: SavingsGoal;
@@ -96,13 +97,13 @@ export const SavingsGoalCardSmall = (props: SavingsGoalCardProps) => {
                             fontFamily: stylingConfig.fontWeight.medium 
                         }}
                     >
-                        ${props.savingGoal.savedAmount}
+                        ${formatNumber(props.savingGoal.savedAmount)}
                     </Paragraph>
                     <Paragraph 
                         style={{ 
                             color: stylingConfig.colors.text.textSecondary
                         }}
-                    > / {props.savingGoal.targetAmount}</Paragraph>
+                    > / {formatNumber(props.savingGoal.targetAmount)}</Paragraph>
                     <Paragraph style={{ color: stylingConfig.colors.secondary }}> ({Math.floor(savedPercentage)}%)</Paragraph>
                 </View>
             </View>

@@ -1,18 +1,18 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { FlatList, Modal, Pressable, StyleSheet, TouchableOpacity, View } from "react-native"
+import { FlatList, StyleSheet, View } from "react-native";
 import { RootStackPropsList } from "../../storage/StackParams";
 import { stylingConfig } from "../../configs/styling.config";
 import { useEffect, useState } from "react";
-import { AccountListItem } from "../../components/new/AccountCardComponents";
 import { Expense } from "../../storage/classes/ExpenseClass";
-import { getExpenses } from "../../storage/database";
+import { addExpense, getExpenses } from "../../storage/database";
 import { BudgetListItem } from "../../components/new/BudgetListItem";
-import { Header, Header2, Header4, Paragraph } from "../../components/CustomTextComponents";
+import { Header2, Paragraph } from "../../components/CustomTextComponents";
 import { PieChart } from "react-native-gifted-charts";
-import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { InstanceCreator } from "../../components/new/InstanceCreator";
 import { InputField } from "../../components/InputFieldComponents";
 import { CreateNewButton } from "../../components/new/CreateNewButton";
+import { SavingsGoal } from "../../storage/classes/SavingsGoalClass";
+import { formatNumber } from "../../utils/NumberFormatter";
 
 type BudgetScreenProps = {
     navigation: StackNavigationProp<RootStackPropsList, 'Budget'>;
@@ -26,17 +26,6 @@ export const BudgetScreen = (props: BudgetScreenProps) => {
     const [rerenderKey, setRerenderKey] = useState(0);
 
     const [chartData, setChartData] = useState(Array<any>);
-
-
-    const [newExpenseName, setNewExpenseName] = useState('');
-    const [newExpenseAllocated, setNewExpenseAllocated] = useState(0);
-    const [newExpenseSpent, setNewExpenseSpent] = useState(0);
-
-    const [isNewExpenseModalVisible, setIsNewExpenseModalVisible] = useState(false);
-    const [isEditExpenseModalVisible, setIsEditExpenseModalVisible] = useState(false);
-
-
-
 
     const fetchItems = async () => {
         console.log("Fetching Expenses");
@@ -54,13 +43,13 @@ export const BudgetScreen = (props: BudgetScreenProps) => {
     const calculateExpensesInTotal = () => {
         let totalAllocated = expenses.reduce((acc, expense) => acc + expense.allocated, 0);
 
-        setExpensesInTotal(totalAllocated);
+        setExpensesInTotal(Math.round(totalAllocated));
     }
 
     const calculateBudgetLeft = () => {
         let newBudgetLeft = expenses.reduce((acc, expense) => acc - expense.currentlySpent, expensesInTotal);
         
-        setBudgetLeft(newBudgetLeft);
+        setBudgetLeft(Math.round(newBudgetLeft));
     }
 
     useEffect(() => {
@@ -82,7 +71,7 @@ export const BudgetScreen = (props: BudgetScreenProps) => {
     }, [expensesInTotal]);
 
     const renderItem = (item: any) => {
-        return <BudgetListItem navigation={props.navigation} item={item} />
+        return <BudgetListItem navigation={props.navigation} onPress={onEditExpenseModalOpen} item={item} />
     }
 
     const updateChartData = () => {
@@ -98,23 +87,120 @@ export const BudgetScreen = (props: BudgetScreenProps) => {
         setChartData(newChartData);
     }
 
+
+
+    const [isNewExpenseModalVisible, setIsNewExpenseModalVisible] = useState(false);
+    const [isEditExpenseModalVisible, setIsEditExpenseModalVisible] = useState(false);
+
+    const [expenseBeingEdited, setExpenseBeingEdited] = useState(new Expense('', 0, 0));
+    const [newExpenseName, setNewExpenseName] = useState('');
+    const [newExpenseAllocated, setNewExpenseAllocated] = useState(0);
+    const [newExpenseSpent, setNewExpenseSpent] = useState(0);
+
     const onNewExpenseModalOpen = () => {
         setIsNewExpenseModalVisible(true);
+    }
+
+    const onEditExpenseModalOpen = (expense: Expense | SavingsGoal) => {
+        if (expense instanceof SavingsGoal) {
+            return;
+        }
+
+        setExpenseBeingEdited(expense);
+        setNewExpenseName(expense.name);
+        setNewExpenseAllocated(expense.allocated);
+        setNewExpenseSpent(expense.currentlySpent);
+
+        setIsEditExpenseModalVisible(true);
     }
 
     const onNewExpenseModalClose = () => {
         setIsNewExpenseModalVisible(false);
     }
 
+    const onEditExpenseModalClose = () => {
+        setIsEditExpenseModalVisible(false);
+    }
+
     const onNewExpenseModalSubmit = () => {
         setIsNewExpenseModalVisible(false);
 
         console.log("Create new expense instnace");
+
+        let newExpense = new Expense(
+            newExpenseName,
+            newExpenseAllocated,
+            newExpenseSpent,
+        );
+
+        addExpense(newExpense);
+        fetchItems();
+        updateChartData();
+        resetModalInputs();
+    }
+
+    const onEditExpenseModalSubmit = () => {
+        setIsEditExpenseModalVisible(false);
+
+        expenseBeingEdited.name = newExpenseName;
+        expenseBeingEdited.allocated = newExpenseAllocated;
+        expenseBeingEdited.currentlySpent = newExpenseSpent;
+
+        fetchItems();
+        updateChartData();
+        resetModalInputs();
+    }
+
+    const resetModalInputs = () => {
+        setNewExpenseName('');
+        setNewExpenseAllocated(0);
+        setNewExpenseSpent(0);
+
+        setRerenderKey(oldKey => oldKey + 1);
     }
 
     return (
         <View style={styles.appWrapper}>
-            <InstanceCreator isVisible={isNewExpenseModalVisible} onClose={onNewExpenseModalClose} onSubmit={onNewExpenseModalSubmit} title={"New Expense"} submitText={"Create Expense"}>
+            <InstanceCreator 
+                title={"New Expense"} 
+                submitText={"Create Expense"}
+                isVisible={isNewExpenseModalVisible} 
+                onClose={onNewExpenseModalClose} 
+                onSubmit={onNewExpenseModalSubmit} 
+            >
+                <InputField 
+                    placeholder="Expense name" 
+                    name="Name" 
+                    maxLength={30}
+                    keyboardType="ascii-capable"
+                    onValueChange={(text) => setNewExpenseName(text)}
+                    value={newExpenseName}
+                />
+                <InputField 
+                    placeholder="0" 
+                    name="Amount Allocated"
+                    keyboardType="number-pad" 
+                    suffix="USD"
+                    onValueChange={(text) => setNewExpenseAllocated(text === '' ? 0 : parseInt(text))}
+                    value={newExpenseAllocated.toString()}
+                />
+                <InputField 
+                    placeholder="0" 
+                    name="Currently Spent"
+                    keyboardType="number-pad"
+                    suffix="USD"
+                    onValueChange={(text) => setNewExpenseSpent(text === '' ? 0 : parseInt(text))}
+                    value={newExpenseSpent.toString()}
+                />
+            </InstanceCreator>
+
+            <InstanceCreator
+                title={"Edit Expense"} 
+                submitText={"Save Changes"}
+                isVisible={isEditExpenseModalVisible} 
+                onClose={onEditExpenseModalClose} 
+                onSubmit={onEditExpenseModalSubmit} 
+            >
                 <InputField 
                     placeholder="Expense name" 
                     name="Name" 
@@ -157,7 +243,7 @@ export const BudgetScreen = (props: BudgetScreenProps) => {
                                     alignItems: 'center'
                                 }}>
                                     <Paragraph>Budget left</Paragraph>
-                                    <Header2>${Math.round(budgetLeft)}</Header2>
+                                    <Header2>${formatNumber(Math.round(budgetLeft))}</Header2>
                                 </View>
                             )
                         }}
@@ -169,6 +255,7 @@ export const BudgetScreen = (props: BudgetScreenProps) => {
                         key={rerenderKey}
                         data={expenses}
                         numColumns={1}
+                        contentInset={{ bottom: 70 }}
                         renderItem={({item}) => renderItem(item)}
                         keyExtractor={(item, index) => `budget-${index}`}
                     />

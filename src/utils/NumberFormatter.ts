@@ -1,4 +1,4 @@
-export function formatNumber(num: number, locale: string = 'da-dk', maxFractions: number = 2): string {
+export function formatNumber(num: number, locale: string = 'en-us', maxFractions: number = 2): string {
     if (num < 1000000) {
         return num.toLocaleString(locale, { maximumFractionDigits: maxFractions });
     }
@@ -8,7 +8,7 @@ export function formatNumber(num: number, locale: string = 'da-dk', maxFractions
     const decimalPart = numInMillions - integerPart;
 
     const decimalStr = decimalPart.toString().substring(2, 2 + maxFractions).padEnd(maxFractions, '0');
-    const formattedMillion = `${integerPart}${decimalStr == "00" || decimalStr.length === 0 ? "" : "," + decimalStr}`;
+    const formattedMillion = `${integerPart}${decimalStr == "00" || decimalStr.length === 0 ? "" : "." + decimalStr}`;
 
-    return `${formattedMillion} mio.`;
+    return `${formattedMillion}M`;
 }

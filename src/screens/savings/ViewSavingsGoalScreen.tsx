@@ -14,7 +14,7 @@ type ViewSavingsGoalProps = {
 export const ViewSavingsGoalScreen = ({ route, navigation }: ViewSavingsGoalProps) => {
     const { savingsGoal } = route.params;
 
-    const savedPercentage = (savingsGoal.getSavedAmount() / savingsGoal.getTargetAmount()) * 100;
+    const savedPercentage = (savingsGoal.savedAmount / savingsGoal.targetAmount) * 100;
     const percentageLeft = 100 - savedPercentage;
 
 
@@ -31,7 +31,7 @@ export const ViewSavingsGoalScreen = ({ route, navigation }: ViewSavingsGoalProp
 
     return (
         <View style={styles.container}>
-            <Subheader style={{ color: stylingConfig.colors.text.textPrimary, fontSize: 22, marginBottom: 50 }}>{savingsGoal.getName()}</Subheader>
+            <Subheader style={{ color: stylingConfig.colors.text.textPrimary, fontSize: 22, marginBottom: 50 }}>{savingsGoal.name}</Subheader>
             <PieChart
                 data={chartData}
                 radius={130}
@@ -41,8 +41,8 @@ export const ViewSavingsGoalScreen = ({ route, navigation }: ViewSavingsGoalProp
                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                             <Header2>{Math.floor(savedPercentage)}%</Header2>
                             <View style={{ flexDirection: 'row' }}>
-                                <Paragraph style={{ color: stylingConfig.colors.primary, fontFamily: stylingConfig.fontWeight.medium }}>${savingsGoal.getSavedAmount()} </Paragraph>
-                                <Paragraph> / {savingsGoal.getTargetAmount()}</Paragraph>
+                                <Paragraph style={{ color: stylingConfig.colors.primary, fontFamily: stylingConfig.fontWeight.medium }}>${savingsGoal.savedAmount} </Paragraph>
+                                <Paragraph> / {savingsGoal.targetAmount}</Paragraph>
                             </View>
                         </View>
                     )

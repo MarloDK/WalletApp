@@ -6,10 +6,12 @@ import { Header2, Header3, Paragraph } from "../CustomTextComponents";
 import { AntDesign } from "@expo/vector-icons";
 import { stylingConfig } from "../../configs/styling.config";
 import { PaymentPeriod } from "../../storage/PaymentPeriodEnum";
+import { formatNumber } from "../../utils/NumberFormatter";
 
 type SubscriptionCardProps = {
     subscription: Subscription;
-    navigation: StackNavigationProp<RootStackPropsList>;
+    onPress?: (subscription: Subscription) => void;
+    navigation?: StackNavigationProp<RootStackPropsList>;
 }
 
 export const SubscriptionCard = (props: SubscriptionCardProps) => {
@@ -20,16 +22,22 @@ export const SubscriptionCard = (props: SubscriptionCardProps) => {
         const date = billingDate.getDate();
 
         if (props.subscription.subscriptionPeriod == PaymentPeriod.YEARLY) {
-            return `${date}/${month}/${year}`;
+            return `${month}/${date}/${year}`;
         }
 
-        return `${date}/${month}`;
+        return `${month}/${date}`;
     }
 
     return (
         <TouchableOpacity 
             style={[styles.verticalListItemContainer]}
-            onPress={() => props.navigation.navigate("EditSubscription", { subscription: props.subscription })}
+            onPress={() => {
+                if (props.navigation) {
+                    props.navigation.navigate("EditSubscription", { subscription: props.subscription })
+                } else if (props.onPress) {
+                    props.onPress(props.subscription);
+                }
+            }}
         >
             <View style={styles.verticalListItemLeftContainer}>
                 <View style={styles.iconContainer}>
@@ -44,7 +52,7 @@ export const SubscriptionCard = (props: SubscriptionCardProps) => {
                 </View>
             </View>
             <View style={styles.valueContainer}>
-                <Paragraph style={styles.valueText}>{props.subscription.price} DKK</Paragraph>
+                <Paragraph style={styles.valueText}>${formatNumber(props.subscription.price)}</Paragraph>
                 <Paragraph style={{ textAlign: 'right' }}>/ {props.subscription.subscriptionPeriodName}</Paragraph>
             </View>
         </TouchableOpacity>

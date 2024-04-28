@@ -49,6 +49,10 @@ export const getSubscriptions = (): Array<Subscription> => {
     return [];
 }
 
+export const addSubscription = (subscription: Subscription) => {
+    randomClasses.subscriptions.push(subscription);
+}
+
 export const getLoans = (): Array<Loan> => {
     if (generalConfig.devBuild) {
         return randomClasses.loans;
@@ -65,4 +69,8 @@ export const getExpenses = (): Array<Expense> => {
 
     console.error('Database: Not fetching db, sending empty array');
     return [];
+}
+
+export const addExpense = (expense: Expense) => {
+    randomClasses.expenses.push(expense);
 }

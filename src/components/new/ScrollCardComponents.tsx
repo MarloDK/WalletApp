@@ -4,20 +4,28 @@ import { AntDesign, FontAwesome5, FontAwesome6, Ionicons, MaterialIcons } from "
 import { stylingConfig } from "../../configs/styling.config";
 import { Account } from "../../storage/classes/AccountClass";
 import { BrandLogos } from "../../utils/LogosAndIcons";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackPropsList } from "../../storage/StackParams";
+import { Subscription } from "../../storage/classes/SubscriptionClass";
+import { formatNumber } from "../../utils/NumberFormatter";
 
 type LargeSlimCardProps = {
-    account: Account,
+    account: Account;
+    navigation: StackNavigationProp<RootStackPropsList>;
 }
 
 export const LargeSlimCard = (props: LargeSlimCardProps) => {
     return (
-        <TouchableOpacity style={[styles.cardContainer, styles.largeSlimCardContainer]}>
+        <TouchableOpacity 
+            style={[styles.cardContainer, styles.largeSlimCardContainer]}
+            onPress={() => props.navigation.navigate("ViewAccount", {account: props.account})}
+        >
             <View style={styles.iconContainer}>
                 {props.account.icon}
             </View>
             <View style={styles.informationWrapper}>
                 <Header3>{props.account.name}</Header3>
-                <Paragraph>Balance: ${props.account.balance}</Paragraph>
+                <Paragraph>Balance: ${formatNumber(props.account.balance)}</Paragraph>
             </View>
             <View style={styles.buttonContainer}>
                 <AntDesign 
@@ -30,32 +38,11 @@ export const LargeSlimCard = (props: LargeSlimCardProps) => {
     )
 }
 
-export const SmallSlimCard = () => {
-    const progress = 30;
-
-    return (
-        <TouchableOpacity style={[styles.cardContainer, styles.smallSlimCardContainer]}>
-            <View style={styles.smallSlimCardUpperContainer}>
-                <View style={styles.iconContainer}>
-                    <Ionicons
-                        name="car"
-                        size={16}
-                        color={stylingConfig.colors.secondaryVar}
-                    />
-                </View>
-                <View style={styles.informationWrapper}>
-                    <Header4>Primary Account</Header4>
-                    <Paragraph>$1,520 / $15,000</Paragraph>
-                </View>
-            </View>
-            <View style={styles.progressBarWrapper}>
-                <View style={[styles.progressBarIndicator, {width: `${progress}%`}]}></View>
-            </View>
-        </TouchableOpacity>
-    )
+type VerticalPaymentListItemProps = {
+    payment: Subscription;
 }
 
-export const VerticalListItem = () => {
+export const VerticalPaymentListItem = (props: VerticalPaymentListItemProps) => {
     return (
         <TouchableOpacity style={[styles.verticalListItemContainer]}>
             <View style={styles.verticalListItemLeftContainer}>
@@ -66,12 +53,12 @@ export const VerticalListItem = () => {
                     />
                 </View>
                 <View style={styles.informationWrapper}>
-                    <Header2>Spotify Premium</Header2>
-                    <Paragraph>Jan 31.</Paragraph>
+                    <Header2>{props.payment.name}</Header2>
+                    <Paragraph>{props.payment.billingDate.toLocaleDateString()}</Paragraph>
                 </View>
             </View>
             <View style={styles.valueContainer}>
-                <Paragraph style={styles.valueText}>- $10</Paragraph>
+                <Paragraph style={styles.valueText}>- ${formatNumber(props.payment.price)}</Paragraph>
             </View>
         </TouchableOpacity>
     )
@@ -106,7 +93,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop: 20,
         padding: 10,
     },
     iconContainer: {

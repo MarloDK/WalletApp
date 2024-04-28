@@ -61,21 +61,21 @@ export class Subscription {
     get subscriptionPeriodName(): string {
         switch (this._subscriptionPeriod) {
             case PaymentPeriod.MONTHLY:
-                return "måned";
+                return "month";
 
             case PaymentPeriod.QUARTERLY:
-                return "3. måned";
+                return "quarter";
 
             case PaymentPeriod.HALF_YEARLY:
-                return "6. måned";
+                return "half year";
 
             case PaymentPeriod.YEARLY:
-                return "år";
+                return "year";
         
             default:
                 break;
         }
-        return "Fejl";
+        return "Error";
     }
 
     set subscriptionPeriod(period: PaymentPeriod) {

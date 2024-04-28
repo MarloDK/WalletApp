@@ -5,9 +5,11 @@ import { RootStackPropsList } from "../../storage/StackParams";
 import { stylingConfig } from "../../configs/styling.config";
 import { SavingsGoal } from "../../storage/classes/SavingsGoalClass";
 import { Header4, Paragraph } from "../CustomTextComponents";
+import { formatNumber } from "../../utils/NumberFormatter";
 
 type BudgetListItemProps = {
     item: Expense | SavingsGoal;
+    onPress: (item: Expense | SavingsGoal) => void;
     navigation: StackNavigationProp<RootStackPropsList>;
 }
 
@@ -31,7 +33,7 @@ export const BudgetListItem = (props: BudgetListItemProps) => {
                 flexDirection: 'column',
                 gap: 10,
             }}
-            onPress={() => console.log("props.navigation.navigate('ViewAccount', { account: props.account })")}
+            onPress={() => props.onPress(props.item)}
         >
             <View style={{
                 flexDirection: 'row',
@@ -39,7 +41,7 @@ export const BudgetListItem = (props: BudgetListItemProps) => {
                 width: '100%',
             }}>
                 <Header4>{props.item.name}</Header4>
-                <Header4 style={{ color: stylingConfig.colors.primary }}>${total}</Header4>
+                <Header4 style={{ color: stylingConfig.colors.primary }}>${formatNumber(Math.round(total))}</Header4>
             </View>
 
             <View style={{
@@ -63,7 +65,7 @@ export const BudgetListItem = (props: BudgetListItemProps) => {
 
                 <Paragraph style={{ color: stylingConfig.colors.text.textSecondary }}>
                     {
-                        props.item instanceof Expense ? `$${Math.round(props.item.allocated - props.item.currentlySpent)} Left` : `${progressBarPercentage}%`
+                        props.item instanceof Expense ? `$${formatNumber(Math.round(props.item.allocated - props.item.currentlySpent))} Left` : `${Math.round(progressBarPercentage)}%`
                     }
                 </Paragraph>
             </View>

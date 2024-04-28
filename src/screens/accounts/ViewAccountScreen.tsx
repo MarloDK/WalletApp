@@ -5,9 +5,10 @@ import { StackNavigationProp } from "@react-navigation/stack"
 import { stylingConfig } from "../../configs/styling.config"
 import { CustomLink, Header, Header2, Header4, Paragraph, Subheader } from "../../components/CustomTextComponents"
 import { useState } from "react"
-import { VerticalListItem } from "../../components/new/ScrollCardComponents"
+import { VerticalPaymentListItem } from "../../components/new/ScrollCardComponents"
 import { Subscription } from "../../storage/classes/SubscriptionClass"
 import { SubscriptionCard } from "../../components/new/SubscriptionCardComponents"
+import { formatNumber } from "../../utils/NumberFormatter"
 
 type ViewAccountProps = {
     route: RouteProp<RootStackPropsList, 'ViewAccount'>,
@@ -43,13 +44,14 @@ export const ViewAccountScreen = ({route, navigation}: ViewAccountProps) => {
     return (
         <View style={styles.appWrapper}>
             <View style={styles.headerExtension}>
-                <Header style={{ color: stylingConfig.colors.text.textLight }}>$ {account.balance}</Header>
+                <Header style={{ color: stylingConfig.colors.text.textLight }}>$ {formatNumber(account.balance)}</Header>
             </View>
             <View style={styles.container}>
+                <CustomLink to={"/Accounts"}>{"<"} Back</CustomLink>
                 <View style={styles.sectionContainer}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
                         <Header2>Subscriptions</Header2>
-                        <CustomLink to={"/Accounts"}>Edit</CustomLink>
+                        <CustomLink to={"/Payments"}>See All</CustomLink>
                     </View>
                     <ScrollView 
                         style={styles.verticalScrollWrapper}
@@ -73,6 +75,7 @@ const styles = StyleSheet.create({
         backgroundColor: stylingConfig.colors.background,
     },
     container: {
+        paddingTop: 20,
         paddingHorizontal: '5%',
         flexDirection: 'column',
         width: '100%',
@@ -87,7 +90,7 @@ const styles = StyleSheet.create({
     sectionContainer: {
         width: '100%',
         alignSelf: 'stretch',
-        paddingTop: 30,
+        paddingTop: 10,
     },
     verticalScrollWrapper: {
         paddingVertical: 10,

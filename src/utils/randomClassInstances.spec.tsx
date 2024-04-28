@@ -40,13 +40,19 @@ export const generateRandomClasses = (): { accounts: Array<Account>, savingsGoal
     let loans = Array.from({ length: loansToGenerate }, genereateRandomLoan);
     let expenses = Array.from({ length: expensesToGenerate }, generateRandomExpense);
 
+    let subscriptionExpense = new Expense("Subscriptions", 0, 0);
+
     subscriptions.forEach(subscription => {
         const randomAccount = accounts[getRandomInt(0, accounts.length)];
 
         if (randomAccount) {
             randomAccount.attachSubscription(subscription);
         }
+
+        subscriptionExpense.allocated += subscription.monthlyPrice;
     });
+
+    expenses.push(subscriptionExpense);
 
     return {
         accounts: !testingConfig.skipClasses.accounts ? accounts : [],
@@ -129,16 +135,26 @@ function generateRandomSubscription(): Subscription {
         : PaymentPeriod.YEARLY;
     
     // Create date object from date variation start date in config
-    let subscriptionDateVariation = new Date(
-        testingConfig.subscriptionSettings.dateVariationStart.year,
-        testingConfig.subscriptionSettings.dateVariationStart.month,
-        testingConfig.subscriptionSettings.dateVariationStart.day
+    let now = new Date();
+
+    let dateBeforeNow = new Date(
+        now.getFullYear() - testingConfig.subscriptionSettings.dateVariation.year,
+        now.getMonth() - testingConfig.subscriptionSettings.dateVariation.month,
+        now.getDate() - testingConfig.subscriptionSettings.dateVariation.day
     );
+
+    let dateAfterNow = new Date(
+        now.getFullYear() + testingConfig.subscriptionSettings.dateVariation.year,
+        now.getMonth() + testingConfig.subscriptionSettings.dateVariation.month,
+        now.getDate() + testingConfig.subscriptionSettings.dateVariation.day
+    );
+
+    const startTime = dateBeforeNow.getTime();
+    const endTime = dateAfterNow.getTime();
     
+    const randomTime = startTime + Math.random() * (endTime - startTime);
     // Generate random date between date variation start date and now
-    let subscriptionDate = new Date(
-        subscriptionDateVariation.getTime() + Math.random() * (new Date().getTime() - subscriptionDateVariation.getTime())
-    );
+    let subscriptionDate = new Date(randomTime);
 
     let newSubscription = new Subscription(
         name,

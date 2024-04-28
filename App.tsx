@@ -4,14 +4,9 @@ import { useFonts, Inter_400Regular, Inter_500Medium, Inter_300Light, Inter_600S
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { fetchDatabase } from './src/storage/database';
-import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { RootStackPropsList } from './src/storage/StackParams';
-import { AccountScreen } from './src/screens/AccountScreen';
 import { DashboardScreen } from './src/screens/DashboardScreen';
-import { Header } from './src/components/CustomTextComponents';
 import { stylingConfig } from './src/configs/styling.config';
-import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { AntDesign, Entypo, Feather, FontAwesome6, Fontisto, MaterialIcons, Octicons } from '@expo/vector-icons';
 import { SavingsScreen } from './src/screens/savings/SavingsScreen';
 import { BudgetScreen } from './src/screens/budget/BudgetScreen';
@@ -20,12 +15,8 @@ import { EditSavingsGoalScreen } from './src/screens/savings/EditSavingsGoalScre
 import { CreateSavingsGoalScreen } from './src/screens/savings/CreateSavingsGoalScreen';
 import { AccountsScreen } from './src/screens/accounts/AccountsScreen';
 import { ViewAccountScreen } from './src/screens/accounts/ViewAccountScreen';
-import { EditAccountScreen } from './src/screens/accounts/EditAccountScreen';
-import { CreateAccountScreen } from './src/screens/accounts/CreateAccountScreen';
 import { PaymentsScreen } from './src/screens/payments/PaymentsScreen';
 import { Stack, getHiddenScreenOptions } from './src/navigation/Stack';
-import { AccountsNavigation } from './src/navigation/AccountsNavigation';
-import { CreateSubscriptionScreen } from './src/screens/accounts/subscriptions/CreateSubscriptionScreen';
 import { EditSubscriptionScreen } from './src/screens/accounts/subscriptions/EditSubscriptionScreen';
 
 // Keep the splash screen visible while the app is loading fonts etc.
@@ -152,22 +143,7 @@ export default function App() {
           component={ViewAccountScreen}
           options={getHiddenScreenOptions("Account")}
         />
-        <Stack.Screen 
-          name='EditAccount'
-          component={EditAccountScreen}
-          options={getHiddenScreenOptions("Edit Account")}
-        />
-        <Stack.Screen 
-          name='CreateAccount'
-          component={CreateAccountScreen}
-          options={getHiddenScreenOptions("New Account")}
-        />
 
-        <Stack.Screen
-          name="CreateSubscription"
-          component={CreateSubscriptionScreen}
-          options={getHiddenScreenOptions("Create Subscription")}
-        />
         <Stack.Screen
           name="EditSubscription"
           component={EditSubscriptionScreen}
