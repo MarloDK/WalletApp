@@ -1,17 +1,16 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { FlatList, ScrollView, StyleSheet, View } from "react-native";
-import { RootStackPropsList } from "../storage/StackParams";
-import { Header2, Header3, Paragraph, CustomLink } from "../components/CustomTextComponents";
-import { stylingConfig } from "../configs/styling.config";
-import { LargeSlimCard } from "../components/new/ScrollCardComponents";
-import { VerticalPaymentListItem } from "../components/new/ScrollCardComponents";
-import { getAccounts, getExpenses, getSavingsGoals, getSubscriptions } from "../storage/database";
-import { SavingsGoalCardSmall } from "../components/new/SavingsGoalCardComponent";
 import { useEffect, useState } from "react";
+import { FlatList, ScrollView, StyleSheet, View } from "react-native";
+import { CustomLink, Header2, Header3, Paragraph } from "../components/CustomTextComponents";
+import { SavingsGoalCardSmall } from "../components/new/SavingsGoalCardComponent";
+import { LargeSlimCard, VerticalPaymentListItem } from "../components/new/ScrollCardComponents";
+import { stylingConfig } from "../configs/styling.config";
+import { RootStackPropsList } from "../storage/StackParams";
 import { Account } from "../storage/classes/AccountClass";
-import { SavingsGoal } from "../storage/classes/SavingsGoalClass";
 import { Expense } from "../storage/classes/ExpenseClass";
+import { SavingsGoal } from "../storage/classes/SavingsGoalClass";
 import { Subscription } from "../storage/classes/SubscriptionClass";
+import { getAccounts, getExpenses, getSavingsGoals, getSubscriptions } from "../storage/database";
 import { formatNumber } from "../utils/NumberFormatter";
 
 type Props = {
@@ -47,7 +46,7 @@ export const DashboardScreen = (props: Props) => {
         calculateExpensesInTotal();
         calculateBudgetLeft();
         
-        setRerenderKey(oldKey => oldKey + 1)
+        setRerenderKey(oldKey => oldKey + 1);
     }
 
     const getUpcomingPayments = (payments: Array<Subscription>): Array<Subscription> => {
@@ -156,7 +155,7 @@ export const DashboardScreen = (props: Props) => {
                 <View style={styles.sectionContainer}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
                         <Header2>Goals</Header2>
-                        <CustomLink to={"/Savings"}>See all</CustomLink>
+                        <CustomLink to={"/Saving"}>See all</CustomLink>
                     </View>
                     <FlatList 
                         key={rerenderKey}

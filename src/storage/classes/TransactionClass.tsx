@@ -9,7 +9,7 @@ export class Transaction {
      */
     constructor(
         private _name: string,
-        readonly date: string,
+        readonly date: Date,
         readonly previousBalance: number,
         readonly newBalance: number,
         readonly transactionValue: number

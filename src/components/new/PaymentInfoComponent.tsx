@@ -1,7 +1,6 @@
 import { StyleSheet, View } from "react-native"
-import { Header4, Paragraph } from "../CustomTextComponents"
-import { FontAwesome6 } from "@expo/vector-icons"
 import { stylingConfig } from "../../configs/styling.config"
+import { Header4, Paragraph } from "../CustomTextComponents"
 
 type PaymentInfoComponentProps = {
     icon: JSX.Element

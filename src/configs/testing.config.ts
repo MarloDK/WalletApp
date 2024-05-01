@@ -9,7 +9,7 @@ export const testingConfig = {
     },
     classInstanceVariation: {
         min: 1,
-        max: 5,
+        max: 10,
     },
     accountSettings: {
         generateTransactionhistory: true,
@@ -47,7 +47,7 @@ export const testingConfig = {
     savingsGoalSettings: {
         goalTarget: {
             min: 100,
-            max: 999999,
+            max: 100000,
         },
         currentlySaved: {
             min: 0,

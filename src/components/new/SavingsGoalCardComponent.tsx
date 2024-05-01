@@ -1,12 +1,11 @@
-import { StyleSheet, View, TouchableOpacity } from "react-native"
-import { stylingConfig } from "../../configs/styling.config"
-import { Header, Header2, Header3, Header4, Paragraph } from "../CustomTextComponents"
-import { PieChart } from "react-native-gifted-charts"
-import { SavingsGoal } from "../../storage/classes/SavingsGoalClass"
-import { RouteProp } from "@react-navigation/native"
-import { RootStackPropsList } from "../../storage/StackParams"
 import { StackNavigationProp } from "@react-navigation/stack"
+import { StyleSheet, TouchableOpacity, View } from "react-native"
+import { PieChart } from "react-native-gifted-charts"
+import { stylingConfig } from "../../configs/styling.config"
+import { RootStackPropsList } from "../../storage/StackParams"
+import { SavingsGoal } from "../../storage/classes/SavingsGoalClass"
 import { formatNumber } from "../../utils/NumberFormatter"
+import { Header3, Paragraph } from "../CustomTextComponents"
 
 type SavingsGoalCardProps = {
     savingGoal: SavingsGoal;
@@ -82,7 +81,7 @@ export const SavingsGoalCardSmall = (props: SavingsGoalCardProps) => {
     return (
         <TouchableOpacity 
             style={styles.smallContainer}
-            onPress={() => props.navigation.navigate('ViewSavingsGoal', { savingsGoal: props.savingGoal, previousScreenRef: props.previousScreenRef ? props.previousScreenRef : undefined })}
+            onPress={() => props.navigation.navigate('Saving')}
         >
             <PieChart
                 data={chartData} 

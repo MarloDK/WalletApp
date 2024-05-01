@@ -1,18 +1,18 @@
-import { StackNavigationProp } from "@react-navigation/stack";
-import { FlatList, StyleSheet, View } from "react-native"
-import { RootStackPropsList } from "../../storage/StackParams";
-import { stylingConfig } from "../../configs/styling.config";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { Header2, Header4, Paragraph } from "../../components/CustomTextComponents";
-import { PaymentInfo } from "../../components/new/PaymentInfoComponent";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { useEffect, useState } from "react";
-import { Subscription } from "../../storage/classes/SubscriptionClass";
-import { PaymentPeriod } from "../../storage/PaymentPeriodEnum";
+import { FlatList, StyleSheet, View } from "react-native";
+import { Header2 } from "../../components/CustomTextComponents";
+import { InputField } from "../../components/InputFieldComponents";
 import { CreateNewButton } from "../../components/new/CreateNewButton";
 import { InstanceCreator } from "../../components/new/InstanceCreator";
-import { InputField } from "../../components/InputFieldComponents";
-import { addSubscription, getSubscriptions } from "../../storage/database";
+import { PaymentInfo } from "../../components/new/PaymentInfoComponent";
 import { SubscriptionCard } from "../../components/new/SubscriptionCardComponents";
+import { stylingConfig } from "../../configs/styling.config";
+import { PaymentPeriod } from "../../storage/PaymentPeriodEnum";
+import { RootStackPropsList } from "../../storage/StackParams";
+import { Subscription } from "../../storage/classes/SubscriptionClass";
+import { addSubscription, getSubscriptions } from "../../storage/database";
 import { formatNumber } from "../../utils/NumberFormatter";
 
 type PaymentsScreenProps = {
@@ -89,6 +89,7 @@ export const PaymentsScreen = (props: PaymentsScreenProps) => {
 
     const onEditPaymentModalClose = () => {
         setIsEditPaymentModalVisible(false);
+        resetModalInputs();
     }
 
     const onNewPaymentModalSubmit = () => {
@@ -119,7 +120,8 @@ export const PaymentsScreen = (props: PaymentsScreenProps) => {
             return console.warn("Price as number was NaN!");
         }
         paymentBeingEdited.price = parseInt(newPaymentPrice);
-        console.log("Line 92 payments screen; add sub period support");
+        
+        console.log("Line 92 - payments screen; add sub period support");
         //paymentBeingEdited.subscriptionPeriod = newPaymentPeriod;
 
         resetModalInputs();
@@ -258,7 +260,7 @@ export const PaymentsScreen = (props: PaymentsScreenProps) => {
 
                 <View style={styles.billingDateInput}>
                     <InputField
-                        name="Billing Date"
+                        name="Billing Year"
                         value={newPaymentBillingDateYear}
                         placeholder="YYYY"
                         maxLength={4}
@@ -267,7 +269,7 @@ export const PaymentsScreen = (props: PaymentsScreenProps) => {
                         flex={2}
                     />
                     <InputField
-                        name=""
+                        name="Month"
                         value={newPaymentBillingDateMonth}
                         placeholder="MM"
                         maxLength={2}
@@ -276,7 +278,7 @@ export const PaymentsScreen = (props: PaymentsScreenProps) => {
                         flex={1}
                     />
                     <InputField
-                        name=""
+                        name="Date"
                         value={newPaymentBillingDateDay}
                         placeholder="DD"
                         maxLength={2}

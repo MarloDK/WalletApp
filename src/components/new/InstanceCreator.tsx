@@ -1,7 +1,7 @@
-import { Modal, Pressable, View, StyleSheet, TouchableOpacity } from "react-native";
-import { Header2, Paragraph } from "../CustomTextComponents";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Modal, Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 import { stylingConfig } from "../../configs/styling.config";
+import { Header2, Paragraph } from "../CustomTextComponents";
 
 export const InstanceCreator = ({ title, submitText, isVisible, children, onClose, onSubmit }: any) => {
     return (

@@ -1,13 +1,13 @@
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native"
-import { Header2, Header3, Header4, Paragraph } from "../CustomTextComponents";
-import { AntDesign, FontAwesome5, FontAwesome6, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { stylingConfig } from "../../configs/styling.config";
-import { Account } from "../../storage/classes/AccountClass";
-import { BrandLogos } from "../../utils/LogosAndIcons";
+import { AntDesign } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { stylingConfig } from "../../configs/styling.config";
 import { RootStackPropsList } from "../../storage/StackParams";
+import { Account } from "../../storage/classes/AccountClass";
 import { Subscription } from "../../storage/classes/SubscriptionClass";
+import { BrandLogos } from "../../utils/LogosAndIcons";
 import { formatNumber } from "../../utils/NumberFormatter";
+import { Header2, Header3, Paragraph } from "../CustomTextComponents";
 
 type LargeSlimCardProps = {
     account: Account;

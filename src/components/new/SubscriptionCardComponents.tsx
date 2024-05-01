@@ -1,12 +1,11 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Subscription } from "../../storage/classes/SubscriptionClass";
-import { RootStackPropsList } from "../../storage/StackParams";
-import { TouchableOpacity, View, Image, StyleSheet } from "react-native";
-import { Header2, Header3, Paragraph } from "../CustomTextComponents";
-import { AntDesign } from "@expo/vector-icons";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { stylingConfig } from "../../configs/styling.config";
 import { PaymentPeriod } from "../../storage/PaymentPeriodEnum";
+import { RootStackPropsList } from "../../storage/StackParams";
+import { Subscription } from "../../storage/classes/SubscriptionClass";
 import { formatNumber } from "../../utils/NumberFormatter";
+import { Header2, Paragraph } from "../CustomTextComponents";
 
 type SubscriptionCardProps = {
     subscription: Subscription;
@@ -33,7 +32,7 @@ export const SubscriptionCard = (props: SubscriptionCardProps) => {
             style={[styles.verticalListItemContainer]}
             onPress={() => {
                 if (props.navigation) {
-                    props.navigation.navigate("EditSubscription", { subscription: props.subscription })
+                    props.navigation.navigate("Payments")
                 } else if (props.onPress) {
                     props.onPress(props.subscription);
                 }

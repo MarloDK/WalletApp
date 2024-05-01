@@ -1,10 +1,7 @@
-import { Component } from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { stylingConfig } from "../configs/styling.config";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackPropsList } from "../storage/StackParams";
-import { To } from "@react-navigation/native/lib/typescript/src/useLinkTo";
 import { Link } from "@react-navigation/native";
+import { To } from "@react-navigation/native/lib/typescript/src/useLinkTo";
+import { Text } from "react-native";
+import { stylingConfig } from "../configs/styling.config";
 
 type TextProps = {
     fontWeight?: string,

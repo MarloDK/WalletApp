@@ -1,17 +1,17 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { FlatList, StyleSheet, View } from "react-native";
-import { RootStackPropsList } from "../../storage/StackParams";
-import { stylingConfig } from "../../configs/styling.config";
 import { useEffect, useState } from "react";
-import { Expense } from "../../storage/classes/ExpenseClass";
-import { addExpense, getExpenses } from "../../storage/database";
-import { BudgetListItem } from "../../components/new/BudgetListItem";
-import { Header2, Paragraph } from "../../components/CustomTextComponents";
+import { FlatList, StyleSheet, View } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
-import { InstanceCreator } from "../../components/new/InstanceCreator";
+import { Header2, Paragraph } from "../../components/CustomTextComponents";
 import { InputField } from "../../components/InputFieldComponents";
+import { BudgetListItem } from "../../components/new/BudgetListItem";
 import { CreateNewButton } from "../../components/new/CreateNewButton";
+import { InstanceCreator } from "../../components/new/InstanceCreator";
+import { stylingConfig } from "../../configs/styling.config";
+import { RootStackPropsList } from "../../storage/StackParams";
+import { Expense } from "../../storage/classes/ExpenseClass";
 import { SavingsGoal } from "../../storage/classes/SavingsGoalClass";
+import { addExpense, getExpenses } from "../../storage/database";
 import { formatNumber } from "../../utils/NumberFormatter";
 
 type BudgetScreenProps = {
@@ -120,6 +120,7 @@ export const BudgetScreen = (props: BudgetScreenProps) => {
 
     const onEditExpenseModalClose = () => {
         setIsEditExpenseModalVisible(false);
+        resetModalInputs();
     }
 
     const onNewExpenseModalSubmit = () => {

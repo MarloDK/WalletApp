@@ -76,7 +76,7 @@ export class Subscription {
                 break;
         }
         return "Error";
-    }
+    } 
 
     set subscriptionPeriod(period: PaymentPeriod) {
         this._subscriptionPeriod = period;

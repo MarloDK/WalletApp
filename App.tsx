@@ -1,23 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import { Text, View } from 'react-native';
-import { useFonts, Inter_400Regular, Inter_500Medium, Inter_300Light, Inter_600SemiBold } from '@expo-google-fonts/inter';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import { fetchDatabase } from './src/storage/database';
+import { Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_600SemiBold, useFonts } from '@expo-google-fonts/inter';
+import { Entypo, Feather, MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
-import { DashboardScreen } from './src/screens/DashboardScreen';
+import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
+import { Text, View } from 'react-native';
 import { stylingConfig } from './src/configs/styling.config';
-import { AntDesign, Entypo, Feather, FontAwesome6, Fontisto, MaterialIcons, Octicons } from '@expo/vector-icons';
-import { SavingsScreen } from './src/screens/savings/SavingsScreen';
-import { BudgetScreen } from './src/screens/budget/BudgetScreen';
-import { ViewSavingsGoalScreen } from './src/screens/savings/ViewSavingsGoalScreen';
-import { EditSavingsGoalScreen } from './src/screens/savings/EditSavingsGoalScreen';
-import { CreateSavingsGoalScreen } from './src/screens/savings/CreateSavingsGoalScreen';
+import { Stack, getHiddenScreenOptions } from './src/navigation/Stack';
+import { DashboardScreen } from './src/screens/DashboardScreen';
 import { AccountsScreen } from './src/screens/accounts/AccountsScreen';
 import { ViewAccountScreen } from './src/screens/accounts/ViewAccountScreen';
+import { BudgetScreen } from './src/screens/budget/BudgetScreen';
+import { SavingScreen } from './src/screens/budget/SavingScreen';
 import { PaymentsScreen } from './src/screens/payments/PaymentsScreen';
-import { Stack, getHiddenScreenOptions } from './src/navigation/Stack';
-import { EditSubscriptionScreen } from './src/screens/accounts/subscriptions/EditSubscriptionScreen';
+import { fetchDatabase } from './src/storage/database';
 
 // Keep the splash screen visible while the app is loading fonts etc.
 SplashScreen.preventAutoHideAsync();
@@ -26,6 +22,7 @@ SplashScreen.preventAutoHideAsync();
 fetchDatabase();
 
 export default function App() {
+  // Import static inter fonts
   const [fontsLoaded] = useFonts({
     Inter_600SemiBold,
     Inter_500Medium,
@@ -57,10 +54,10 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <StatusBar style="dark"/>
+      <StatusBar style="auto"/>
       <Stack.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
+        screenOptions={({ route }: any) => ({
+          tabBarIcon: ({ focused, color, size }: any) => {
             let icon;
             size = 25;
 
@@ -72,7 +69,8 @@ export default function App() {
               icon = <MaterialIcons name='payments' size={size} color={color} />
             } else if (route.name === "Budget") {
               icon = <Feather name='trending-up' size={size} color={color} />; // FontAwesome6 or pie-chart-2 from Fontisto
-              // icon = <Fontisto name='pie-chart-2' size={size} color={color} />; // FontAwesome6 or pie-chart-2 from Fontisto
+            } else if (route.name === "Saving") {
+              icon = <MaterialIcons name='savings' size={size} color={color} />
             }
 
             return icon;
@@ -137,39 +135,15 @@ export default function App() {
           name="Budget" 
           component={BudgetScreen}
         />
+        <Stack.Screen 
+          name="Saving" 
+          component={SavingScreen}
+        />
 
         <Stack.Screen 
           name='ViewAccount'
           component={ViewAccountScreen}
           options={getHiddenScreenOptions("Account")}
-        />
-
-        <Stack.Screen
-          name="EditSubscription"
-          component={EditSubscriptionScreen}
-          options={getHiddenScreenOptions("Edit Subscription")}
-        />
-
-
-        <Stack.Screen 
-          name='Savings'
-          component={SavingsScreen}
-          options={getHiddenScreenOptions("Savings")}
-        />
-        <Stack.Screen 
-          name='ViewSavingsGoal'
-          component={ViewSavingsGoalScreen}
-          options={getHiddenScreenOptions("Savings Goal")}
-        />
-        <Stack.Screen 
-          name='EditSavingsGoal'
-          component={EditSavingsGoalScreen}
-          options={getHiddenScreenOptions("Edit Savings Goal")}
-        />
-        <Stack.Screen 
-          name='CreateSavingsGoal'
-          component={CreateSavingsGoalScreen}
-          options={getHiddenScreenOptions("New Savings Goal")}
         />
       </Stack.Navigator>
       <StatusBar style="light"/>

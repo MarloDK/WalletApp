@@ -129,17 +129,22 @@ export class Account {
      */
     detachSubscription(subscriptionIndex: number): void
     detachSubscription(subscription: Subscription | number): void {
+        // Variable for storing index of subscription in array
         let index: number = -1;
 
+        
         if (typeof subscription === "number") {
             index = subscription;
         } else if (typeof subscription === typeof Subscription) {
+            // Check if _attachedSubscriptions doesn't include subscription
             if (!this._attachedSubscriptions.includes(subscription)) {
-                return console.log(`Couldn't find subscription ${subscription.getName()} in attached subscriptions for account ${this._name}`)
+                return console.log(`Couldn't find subscription ${subscription.name} in attached subscriptions for account ${this._name}`)
             }
+            // Set index variable to index of subscription
             index = this._attachedSubscriptions.indexOf(subscription);
         }
 
+        // Remove the subscription from attachedSubscriptions
         this._attachedSubscriptions.splice(index, 1);
     }
 

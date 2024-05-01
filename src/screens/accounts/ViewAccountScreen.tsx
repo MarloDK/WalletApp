@@ -1,13 +1,12 @@
 import { RouteProp } from "@react-navigation/native"
-import { FlatList, StyleSheet, View, ScrollView, TouchableOpacity } from "react-native"
-import { RootStackPropsList } from "../../storage/StackParams"
 import { StackNavigationProp } from "@react-navigation/stack"
-import { stylingConfig } from "../../configs/styling.config"
-import { CustomLink, Header, Header2, Header4, Paragraph, Subheader } from "../../components/CustomTextComponents"
 import { useState } from "react"
-import { VerticalPaymentListItem } from "../../components/new/ScrollCardComponents"
-import { Subscription } from "../../storage/classes/SubscriptionClass"
+import { ScrollView, StyleSheet, View } from "react-native"
+import { CustomLink, Header, Header2 } from "../../components/CustomTextComponents"
 import { SubscriptionCard } from "../../components/new/SubscriptionCardComponents"
+import { stylingConfig } from "../../configs/styling.config"
+import { RootStackPropsList } from "../../storage/StackParams"
+import { Subscription } from "../../storage/classes/SubscriptionClass"
 import { formatNumber } from "../../utils/NumberFormatter"
 
 type ViewAccountProps = {

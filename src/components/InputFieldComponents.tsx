@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
-import { Header2, Header3, Paragraph } from "./CustomTextComponents";
-import { KeyboardTypeOptions, StyleSheet, TextInput, TextInputTextInputEventData, TouchableOpacity, View } from "react-native";
+import { KeyboardTypeOptions, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { stylingConfig } from "../configs/styling.config";
+import { Header2, Paragraph } from "./CustomTextComponents";
 
 type InputFieldProps = {
     name: string,
@@ -22,15 +22,19 @@ export const InputField = (props: InputFieldProps) => {
         props.value = props.value.toString();
     }
 
+    // Makes sure the input is safe
     const returnSafeInput = (input: string) => {
+        // If onValueChange isn't set, return
         if (!props.onValueChange) {
             return;
         }
 
+        // If the wanted value is a string, convert input value to string
         if (typeof props.value === 'string') {
             return props.onValueChange(input.toString());
         }
 
+        // Parse input as a number, if it's NaN, set input to nothing
         let inputAsNum = parseInt(input);
         if (Number.isNaN(inputAsNum)) {
             input = '';
